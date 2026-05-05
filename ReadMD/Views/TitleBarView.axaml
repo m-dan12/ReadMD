@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             xmlns:vm="clr-namespace:ReadMD.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Background="#00000000"
+             x:Class="ReadMD.Views.TitleBarView"
+             x:DataType="vm:TitleBarViewModel">
+    <DockPanel Margin="4">
+		<Button DockPanel.Dock="Left" Classes="s icon" Margin="0 0 8 0">
+			<ic:FluentIcon Icon="Navigation" FontSize="16"/>
+        </Button>
+            
+		<Button DockPanel.Dock="Right" Classes="close s icon"
+                Command="{Binding CloseCommand}">
+            <ic:FluentIcon Icon="Dismiss" FontSize="16"/>
+        </Button>
+		<Button DockPanel.Dock="Right" Classes="maximize s icon"
+                Command="{Binding MaximizeCommand}">
+			<ic:FluentIcon Icon="SquareMultiple" FontSize="16"/>    
+        </Button>
+        <Button DockPanel.Dock="Right"  Classes="minimize s icon"
+                Command="{Binding MinimizeCommand}">
+            <ic:FluentIcon Icon="Subtract" FontSize="16"/>
+        </Button>
+            
+		<Button DockPanel.Dock="Right" Classes="s icon" Margin="0 0 8 0">
+			<ic:FluentIcon Icon="Edit" FontSize="16"/>
+        </Button>
+		<Button DockPanel.Dock="Right" Classes="s icon" Margin="0 0 8 0">
+			<ic:FluentIcon Icon="Options" FontSize="16"/>
+        </Button>
+		<Button DockPanel.Dock="Right" Classes="s icon" Margin="0 0 8 0">
+			<ic:FluentIcon Icon="WeatherMoon" FontSize="16"/>
+        </Button>
+
+        <TextBlock Text="Название файла" Grid.Column="1" VerticalAlignment="Center"/>
+    </DockPanel>
+</UserControl>
