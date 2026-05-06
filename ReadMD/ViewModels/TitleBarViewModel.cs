@@ -4,6 +4,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using FluentIcons.Common;
 using ReadMD.Services;
 using System;
 using System.Collections.Generic;
@@ -16,10 +17,12 @@ public partial class TitleBarViewModel : ViewModelBase
     private readonly IThemeService _themeService;
 
     [ObservableProperty] private string _appTitle = "MyApp";
-    [ObservableProperty] private bool _isMenuOpen;
+    [ObservableProperty] private bool _isMenuOpen = false;
     [ObservableProperty] private bool _isDarkTheme;
     [ObservableProperty] private bool _isEnglish = true;
     [ObservableProperty] private bool _isRussian;
+    [ObservableProperty] private Icon _maximizeIcon = Icon.Maximize;
+    
 
     public TitleBarViewModel(IThemeService themeService)
     {
@@ -30,9 +33,8 @@ public partial class TitleBarViewModel : ViewModelBase
     private static Window? GetWindow() =>
         (Application.Current?.ApplicationLifetime as IClassicDesktopStyleApplicationLifetime)
         ?.MainWindow;
-
     [RelayCommand]
-    private void ToggleMenu() => IsMenuOpen = !IsMenuOpen;
+    private void CloseMenu() => IsMenuOpen = false;
 
     [RelayCommand]
     private void Minimize() => GetWindow()?.WindowState = WindowState.Minimized;
@@ -42,9 +44,16 @@ public partial class TitleBarViewModel : ViewModelBase
     {
         var w = GetWindow();
         if (w is null) return;
-        w.WindowState = w.WindowState == WindowState.Maximized
-            ? WindowState.Normal
-            : WindowState.Maximized;
+        if (w.WindowState == WindowState.Maximized)
+        {
+            w.WindowState = WindowState.Normal;
+            MaximizeIcon = Icon.Maximize;
+        }
+        else
+        {
+            w.WindowState = WindowState.Maximized;
+            MaximizeIcon = Icon.SquareMultiple;
+        }
     }
 
     [RelayCommand]

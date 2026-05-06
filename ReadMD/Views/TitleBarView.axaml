@@ -4,13 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:ic="using:FluentIcons.Avalonia"
              xmlns:vm="clr-namespace:ReadMD.ViewModels"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" Background="#00000000"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="400" Background="#00000000"
              x:Class="ReadMD.Views.TitleBarView"
              x:DataType="vm:TitleBarViewModel">
     <DockPanel Margin="4">
-		<Button DockPanel.Dock="Left" Classes="s icon" Margin="0 0 8 0">
+		<ToggleButton x:Name="BurgerButton" DockPanel.Dock="Left" Margin="0 0 8 0"
+                IsChecked="{Binding IsMenuOpen, Mode=TwoWay}">
 			<ic:FluentIcon Icon="Navigation" FontSize="16"/>
-        </Button>
+        </ToggleButton>
             
 		<Button DockPanel.Dock="Right" Classes="close s icon"
                 Command="{Binding CloseCommand}">
@@ -18,7 +19,7 @@
         </Button>
 		<Button DockPanel.Dock="Right" Classes="maximize s icon"
                 Command="{Binding MaximizeCommand}">
-			<ic:FluentIcon Icon="SquareMultiple" FontSize="16"/>    
+			<ic:FluentIcon Icon="{Binding MaximizeIcon}" FontSize="16"/>    
         </Button>
         <Button DockPanel.Dock="Right"  Classes="minimize s icon"
                 Command="{Binding MinimizeCommand}">
@@ -31,9 +32,69 @@
 		<Button DockPanel.Dock="Right" Classes="s icon" Margin="0 0 8 0">
 			<ic:FluentIcon Icon="Options" FontSize="16"/>
         </Button>
-		<Button DockPanel.Dock="Right" Classes="s icon" Margin="0 0 8 0">
-			<ic:FluentIcon Icon="WeatherMoon" FontSize="16"/>
-        </Button>
+		<ToggleButton x:Name="ThemeToggleButton" DockPanel.Dock="Right" Classes="s icon theme" Margin="0 0 8 0"
+                IsChecked="{Binding IsDarkTheme}">
+            <Panel>
+			    <ic:FluentIcon Icon="WeatherMoon"
+                               IsVisible="{Binding #ThemeToggleButton.IsChecked, Converter={x:Static BoolConverters.Not}}"/>
+                <ic:FluentIcon Icon="WeatherSunny"
+                               IsVisible="{Binding #ThemeToggleButton.IsChecked}"/>
+            </Panel>
+        </ToggleButton>
+
+        <!-- Popup-меню под бургером -->
+        <Popup x:Name="BurgerPopup"
+               IsOpen="{Binding #BurgerButton.IsChecked, Mode=TwoWay}"
+               PlacementAnchor="BottomLeft"
+               PlacementGravity="BottomLeft"
+               PlacementTarget="{Binding #BurgerButton}"
+               IsLightDismissEnabled="True" Margin="4">
+
+            <Border Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    MinWidth="220" Margin="4"
+                    BoxShadow="0 0 4 0 #28000000">
+
+                <StackPanel Spacing="4">
+                    <Grid ColumnDefinitions="* auto" Margin="4 4 4 0">
+						<TextBlock Text="Меню"
+                               FontSize="16" FontWeight="Medium" Foreground="Gray"
+                               Margin="12 6 0 4"/>
+                        <Button Classes="s icon" Grid.Column="1" BorderThickness="0"
+                                Command="{Binding CloseMenuCommand}">
+							<ic:FluentIcon Icon="Dismiss" FontSize="16" Foreground="Gray"/>
+                        </Button>
+                    </Grid>
+                    <Separator Margin="0" Opacity="0.3"/>
+                    <Button HorizontalAlignment="Stretch" CornerRadius="4" Padding="12 8" Margin="4 0" BorderBrush="Transparent">
+						<Grid ColumnDefinitions="* auto">
+							<TextBlock Text="Открыть файл" VerticalAlignment="Center"/>
+                            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" BorderBrush="Gray" BorderThickness="1" Grid.Column="1" Padding="4" CornerRadius="4">
+								<TextBlock Text="Ctrl + O" FontSize="10"/>
+                            </Border>
+                        </Grid>
+                    </Button>
+                    <Button HorizontalAlignment="Stretch" CornerRadius="4" Padding="12 8" Margin="4 0" BorderBrush="Transparent">
+						<Grid ColumnDefinitions="* auto">
+							<TextBlock Text="Закрыть файл" VerticalAlignment="Center"/>
+                            <Border Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}" BorderBrush="Gray" BorderThickness="1" Grid.Column="1" Padding="4" CornerRadius="4">
+								<TextBlock Text="Ctrl + W" FontSize="10"/>
+                            </Border>
+                        </Grid>
+                    </Button>
+                    <Grid ColumnDefinitions="* auto" Margin="4 0 4 4">
+						<TextBlock Margin="12 0 0 0" Text="Язык" VerticalAlignment="Center"/>
+                        <ComboBox SelectedIndex="0" Grid.Column="1" Width="124" Height="44" BorderBrush="LightGray">
+							<ComboBoxItem Content="Системный"/>
+                            <ComboBoxItem Content="Русский"/>
+                            <ComboBoxItem Content="English"/>
+                        </ComboBox>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </Popup>
 
         <TextBlock Text="Название файла" Grid.Column="1" VerticalAlignment="Center"/>
     </DockPanel>
