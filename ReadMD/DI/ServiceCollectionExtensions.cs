@@ -13,6 +13,8 @@ public static class ServiceCollectionExtensions
     {
         //Services
         services.AddSingleton<IThemeService, ThemeService>();
+        services.AddSingleton<IReadingSettingsService, ReadingSettingsService>();
+        services.AddSingleton<IWindowService, WindowService>();
 
         // ViewModels
         services.AddTransient<MainViewModel>();

@@ -1,10 +1,12 @@
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Data.Core;
 using Avalonia.Data.Core.Plugins;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using ReadMD.DI;
+using ReadMD.Services;
 using ReadMD.ViewModels;
 using ReadMD.Views;
 using System;
@@ -22,8 +24,13 @@ public partial class App : Application
     {
         Services = new ServiceCollection().ConfigureServices().BuildServiceProvider();
 
+
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
-            desktop.MainWindow = Services.GetRequiredService<MainWindow>();
+        {
+            var window = Services.GetRequiredService<MainWindow>();
+            Services.GetRequiredService<IWindowService>().Initialize(window);
+            desktop.MainWindow = window;
+        }
 
         base.OnFrameworkInitializationCompleted();
     }

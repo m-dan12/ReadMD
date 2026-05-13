@@ -1,114 +1,208 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:ic="using:FluentIcons.Avalonia">
+        xmlns:ic="using:FluentIcons.Avalonia">
+
     <Design.PreviewWith>
         <Border Padding="20" Background="Gray">
             <StackPanel Orientation="Horizontal">
-                <Button Classes="minimize" Content="‒"/>
-                <Button Classes="maximize" Content="▢"/>
-                <Button Classes="close s icon" Content="✗"/>
-                <Button Classes="icon s" Content="Текст"/>
+                <Button Classes="start icon m outline">
+                    <ic:FluentIcon Icon="Subtract"/>
+                </Button>
+                <Button Classes="gap icon m outline">
+                    <ic:FluentIcon Icon="Maximize"/>
+                </Button>
+                <Button Classes="end close icon m outline">
+                    <ic:FluentIcon Icon="Dismiss"/>
+                </Button>
+                <RadioButton Margin="10 0" Classes="Toggle m icon" IsChecked="True">
+                    <TextBlock Text="Button"/>
+                </RadioButton>
             </StackPanel>
         </Border>
     </Design.PreviewWith>
 
+    <!--
+        Общие свойства для Button и ToggleButton вынесены в отдельные блоки.
+        Размерные классы (.s / .m / .l) и класс .outline не дублируются —
+        каждый объявлен ровно один раз для каждого типа контрола.
+    -->
+
+    <!-- ══════════════════════════════════════════
+         ToggleButton
+    ══════════════════════════════════════════ -->
     <Style Selector="ToggleButton">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
+        <Setter Property="Background"   Value="Transparent"/>
         <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Padding" Value="4"/>
+        <Setter Property="Padding"      Value="4"/>
         <Setter Property="WindowDecorationProperties.ElementRole" Value="User"/>
-		<Style Selector="^.s">
-			<Setter Property="Height" Value="28"/>
-            <Style Selector="^.icon">
-			    <Setter Property="Width" Value="28"/>
-            </Style>
-        </Style>
-		<Style Selector="^.m">
-			<Setter Property="Height" Value="36"/>
-            <Style Selector="^.icon">
-			    <Setter Property="Width" Value="36"/>
-            </Style>
-        </Style>
-		<Style Selector="^.l">
-			<Setter Property="Height" Value="44"/>
-            <Style Selector="^.icon">
-			    <Setter Property="Width" Value="44"/>
-            </Style>
-        </Style>
+
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#30FFFFFF"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="Background" Value="#0A000000"/>
+            <Setter Property="Cursor"     Value="Hand"/>
         </Style>
-        <Style Selector="^.theme">
-            <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="Transparent"/>
-                <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+
+        <!-- Размеры -->
+        <Style Selector="^.s">
+            <Setter Property="Height" Value="28"/>
+            <Style Selector="^.icon">
+                <Setter Property="Width" Value="28"/>
+            </Style>
+        </Style>
+        <Style Selector="^.m">
+            <Setter Property="Height" Value="36"/>
+            <Style Selector="^.icon">
+                <Setter Property="Width" Value="36"/>
+            </Style>
+        </Style>
+        <Style Selector="^.l">
+            <Setter Property="Height" Value="44"/>
+            <Style Selector="^.icon">
+                <Setter Property="Width" Value="44"/>
+            </Style>
+        </Style>
+
+        <!-- Граница -->
+        <Style Selector="^.outline">
+            <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <!-- При наведении граница сохраняется явно, т.к. ContentPresenter перекрывает её -->
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background"      Value="#0A000000"/>
+                <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="CornerRadius" Value="4"/>
             </Style>
         </Style>
-    </Style>
-    <Style Selector="Button">
-        <Setter Property="Background" Value="Transparent"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-        <Setter Property="BorderThickness" Value="1"/>
-        <Setter Property="CornerRadius" Value="4"/>
-        <Setter Property="Padding" Value="4"/>
-        <Setter Property="WindowDecorationProperties.ElementRole" Value="User"/>
-		<Style Selector="^.s">
-			<Setter Property="Height" Value="28"/>
-            <Style Selector="^.icon">
-			    <Setter Property="Width" Value="28"/>
-            </Style>
-        </Style>
-		<Style Selector="^.m">
-			<Setter Property="Height" Value="36"/>
-            <Style Selector="^.icon">
-			    <Setter Property="Width" Value="36"/>
-            </Style>
-        </Style>
-		<Style Selector="^.l">
-			<Setter Property="Height" Value="44"/>
-            <Style Selector="^.icon">
-			    <Setter Property="Width" Value="44"/>
-            </Style>
-        </Style>
-        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#30FFFFFF"/>
-            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+
+        <!-- Переключатель темы: checked-состояние выглядит как outline-кнопка -->
+        <Style Selector="^.theme:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background"      Value="Transparent"/>
+            <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="CornerRadius" Value="4"/>
+            <Setter Property="CornerRadius"    Value="4"/>
         </Style>
-        <Style Selector="^.minimize">
-            <Setter Property="BorderThickness" Value="1 1 0 1"/>
-            <Setter Property="CornerRadius" Value="4 0 0 4"/>
-            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="#30FFFFFF"/>
-                <Setter Property="BorderThickness" Value="1 1 0 1"/>
-                <Setter Property="CornerRadius" Value="4 0 0 4"/>
-            </Style>
-        </Style>
-        <Style Selector="^.maximize">
-            <Setter Property="BorderThickness" Value="0 1 0 1"/>
-            <Setter Property="CornerRadius" Value="0 0 0 0"/>
-            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="#30FFFFFF"/>
-                <Setter Property="BorderThickness" Value="0 1 0 1"/>
-                <Setter Property="CornerRadius" Value="0 0 0 0"/>
-            </Style>
-        </Style>
-        <Style Selector="^.close">
-            <Setter Property="BorderThickness" Value="0 1 1 1"/>
-            <Setter Property="CornerRadius" Value="0 4 4 0"/>
-            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="#30FF0000"/>
-                <Setter Property="BorderThickness" Value="0 1 1 1"/>
-                <Setter Property="CornerRadius" Value="0 4 4 0"/>
-            </Style>
+
+        <!-- Сегментированный переключатель (используется в попапе настроек) -->
+        <Style Selector="^.check:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="Foreground" Value="Black"/>
         </Style>
     </Style>
+
+    <!-- ══════════════════════════════════════════
+         Button
+    ══════════════════════════════════════════ -->
+    <Style Selector="Button">
+        <Setter Property="Background"      Value="Transparent"/>
+        <Setter Property="BorderThickness" Value="0"/>
+        <Setter Property="CornerRadius"    Value="4"/>
+        <Setter Property="Padding"         Value="8 4"/>
+        <Setter Property="WindowDecorationProperties.ElementRole" Value="User"/>
+
+        <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#0A000000"/>
+            <Setter Property="Cursor"     Value="Hand"/>
+        </Style>
+
+        <!-- Размеры -->
+        <Style Selector="^.s">
+            <Setter Property="Height" Value="28"/>
+            <Style Selector="^.icon">
+                <Setter Property="Width" Value="28"/>
+            </Style>
+        </Style>
+        <Style Selector="^.m">
+            <Setter Property="Height" Value="36"/>
+            <Style Selector="^.icon">
+                <Setter Property="Width" Value="36"/>
+            </Style>
+        </Style>
+        <Style Selector="^.l">
+            <Setter Property="Height" Value="44"/>
+            <Style Selector="^.icon">
+                <Setter Property="Width" Value="44"/>
+            </Style>
+        </Style>
+
+        <!-- Граница -->
+        <Style Selector="^.outline">
+            <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background"      Value="#0A000000"/>
+                <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+        </Style>
+
+        <!-- Стиль строки меню (текст + горячая клавиша). -->
+        <Style Selector="^.Menu">
+            <Setter Property="HorizontalAlignment" Value="Stretch"/>
+            <Setter Property="CornerRadius"        Value="4"/>
+            <Setter Property="Padding"             Value="12 8"/>
+            <Setter Property="Margin"              Value="16 0"/>
+            <Setter Property="BorderBrush"         Value="Transparent"/>
+        </Style>
+
+        <!--
+        Группа системных кнопок (минимизация / разворот / закрытие).
+        .start — левая, .gap — средняя, .end — правая кнопка в группе.
+        Дублирование внутри :pointerover убрано: ContentPresenter наследует
+        BorderThickness и CornerRadius от родителя, повторять их не нужно.
+        -->
+        <Style Selector="^.start">
+            <Setter Property="BorderThickness" Value="1 1 0 1"/>
+            <Setter Property="CornerRadius"    Value="4 0 0 4"/>
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background"      Value="#0A000000"/>
+                <Setter Property="BorderThickness" Value="1 1 0 1"/>
+                <Setter Property="CornerRadius"    Value="4 0 0 4"/>
+            </Style>
+        </Style>
+        <Style Selector="^.gap">
+            <Setter Property="BorderThickness" Value="0 1"/>
+            <Setter Property="CornerRadius"    Value="0"/>
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background"       Value="#0A000000"/>
+                <Setter Property="BorderThickness"  Value="0 1"/>
+                <Setter Property="CornerRadius"     Value="0"/>
+            </Style>
+        </Style>
+        <Style Selector="^.end">
+            <Setter Property="BorderThickness" Value="0 1 1 1"/>
+            <Setter Property="CornerRadius"    Value="0 4 4 0"/>
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background"      Value="#0A000000"/>
+                <Setter Property="BorderThickness" Value="0 1 1 1"/>
+                <Setter Property="CornerRadius"    Value="0 4 4 0"/>
+            </Style>
+        </Style>
+
+        <!-- Системные кнопки не меняют курсор на руку -->
+        <Style Selector="^.system:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Cursor" Value="Arrow"/>
+        </Style>
+
+        <!-- Кнопка закрытия подсвечивается красным -->
+        <Style Selector="^.close:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="#30FF0000"/>
+        </Style>
+    </Style>
+
+    <!-- ══════════════════════════════════════════
+         RadioButton.Toggle — рендерится как ToggleButton
+    ══════════════════════════════════════════ -->
+    <Style Selector="RadioButton.Toggle">
+        <Setter Property="Template">
+            <ControlTemplate>
+                <ToggleButton IsChecked="{TemplateBinding IsChecked, Mode=TwoWay}"
+                              Content="{TemplateBinding Content}"
+                              Width="{TemplateBinding Width}"
+                              Height="{TemplateBinding Height}"
+                              Margin="{TemplateBinding Margin}"
+                              Padding="4"
+                              Classes="check m icon"/>
+            </ControlTemplate>
+        </Setter>
+    </Style>
+
 </Styles>

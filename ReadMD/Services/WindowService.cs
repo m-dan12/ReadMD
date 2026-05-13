@@ -1,33 +1,33 @@
 ﻿using Avalonia.Controls;
 using Avalonia.Input;
+using System;
 
 namespace ReadMD.Services;
 
 public interface IWindowService
 {
-    Window MainWindow { get; }
+    WindowState getWindowState();
+    void Initialize(Window window);
     void Minimize();
     void Maximize();
-    void Restore();
     void Close();
 }
 
-public class WindowService(Window mainWindow) : IWindowService
+public class WindowService : IWindowService
 {
-    public Window MainWindow => mainWindow;
-
-    public void Minimize() => mainWindow.WindowState = WindowState.Minimized;
-
-    public void Maximize() => mainWindow.WindowState = WindowState.Maximized;
-
-    public void Restore() => mainWindow.WindowState = WindowState.Normal;
-
-    public void Close() => mainWindow.Close();
+    private Window? _window;
+    private Window Window => _window
+        ?? throw new InvalidOperationException("WindowService не инициализирован");
+    public WindowState getWindowState() => Window.WindowState;
+    public void Initialize(Window window) => _window = window;
+    public void Minimize() => Window.WindowState = WindowState.Minimized;
+    public void Maximize() => Window.WindowState = Window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
+    public void Close() => Window.Close();
 
     // Метод для перетаскивания окна
     public void BeginMoveDrag(PointerPressedEventArgs e)
     {
-        if (e.GetCurrentPoint(mainWindow).Properties.IsLeftButtonPressed)
-            mainWindow.BeginMoveDrag(e);
+        if (e.GetCurrentPoint(Window).Properties.IsLeftButtonPressed)
+            Window.BeginMoveDrag(e);
     }
 }
