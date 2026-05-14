@@ -1,6 +1,4 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using ReadMD.ViewModels;
 
 namespace ReadMD;
 

@@ -8,10 +8,11 @@
         ExtendClientAreaToDecorationsHint="True"
         WindowDecorations="BorderOnly"
         x:Class="ReadMD.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="ReadMD">
     <DockPanel>
-        <view:TitleBarView DockPanel.Dock="Top" WindowDecorationProperties.ElementRole="TitleBar"/>
-        <view:MainView/>
+        <view:TitleBarView DataContext="{Binding TitleBarViewModel}" DockPanel.Dock="Top" WindowDecorationProperties.ElementRole="TitleBar"/>
+        <view:MainView DataContext="{Binding MainViewModel}"/>
     </DockPanel>
 </Window>

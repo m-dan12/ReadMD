@@ -267,18 +267,21 @@
                         <Border Grid.Column="1" Classes="SegmentContainer">
                             <StackPanel Orientation="Horizontal" Spacing="4">
                                 <RadioButton Classes="Toggle"
+                                             GroupName="LineWidthGroup"
                                              IsChecked="{Binding LineWidth, Converter={StaticResource EnumToBoolConverter}, 
                                                                 ConverterParameter=Narrow, Mode=TwoWay}">
                                     <Svg Path="/Assets/icons/icon-line-width-s.svg" CurrentColor="Black"/>
                                 </RadioButton>
     
                                 <RadioButton Classes="Toggle"
+                                             GroupName="LineWidthGroup"
                                              IsChecked="{Binding LineWidth, Converter={StaticResource EnumToBoolConverter}, 
                                                                 ConverterParameter=Medium, Mode=TwoWay}">
                                     <Svg Path="/Assets/icons/icon-line-width-m.svg" CurrentColor="Black"/>
                                 </RadioButton>
     
                                 <RadioButton Classes="Toggle"
+                                             GroupName="LineWidthGroup"
                                              IsChecked="{Binding LineWidth, Converter={StaticResource EnumToBoolConverter}, 
                                                                 ConverterParameter=Wide, Mode=TwoWay}">
                                     <Svg Path="/Assets/icons/icon-line-width-l.svg" CurrentColor="Black"/>
