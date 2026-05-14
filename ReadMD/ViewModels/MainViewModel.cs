@@ -7,6 +7,7 @@ namespace ReadMD.ViewModels;
 public partial class MainViewModel : ViewModelBase
 {
     private readonly IReadingSettingsService _readingSettings;
+    private readonly IMarkdownDocumentService _markdownDocumentService;
 
     [ObservableProperty]
     private double lineWidthWidth = 600;
@@ -14,15 +15,28 @@ public partial class MainViewModel : ViewModelBase
     [ObservableProperty]
     private double lineWidthMaxWidth = 800;
 
-    public MainViewModel(IReadingSettingsService readingSettings)
+    [ObservableProperty]
+    private string markdown = "# Заголовок";
+
+    public MainViewModel(
+        IReadingSettingsService readingSettings,
+        IMarkdownDocumentService markdownDocumentService)
     {
         _readingSettings = readingSettings;
+        _markdownDocumentService = markdownDocumentService;
+        markdown = markdownDocumentService.Markdown;
+
         UpdateWidths(readingSettings.LineWidth);
 
         // Подписка на изменения
         _readingSettings.SettingsChanged += () =>
         {
             UpdateWidths(_readingSettings.LineWidth);
+        };
+
+        _markdownDocumentService.MarkdownChanged += () =>
+        {
+            Markdown = _markdownDocumentService.Markdown;
         };
     }
 

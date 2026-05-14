@@ -30,6 +30,7 @@ public partial class App : Application
             var window = Services.GetRequiredService<MainWindow>();
             window.DataContext = Services.GetRequiredService<MainWindowViewModel>();
             Services.GetRequiredService<IWindowService>().Initialize(window);
+            Services.GetRequiredService<IFileDialogService>().Initialize(window);
             desktop.MainWindow = window;
         }
 

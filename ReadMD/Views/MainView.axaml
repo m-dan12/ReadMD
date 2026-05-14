@@ -11,6 +11,6 @@
              x:DataType="vm:MainViewModel">
     <Panel Width="{Binding LineWidthWidth}"
            MaxWidth="{Binding LineWidthMaxWidth}">
-	    <mv:MarkdownViewer Markdown="# Заголовок"/>
+	    <mv:MarkdownViewer Markdown="{Binding Markdown}"/>
     </Panel>
 </UserControl>

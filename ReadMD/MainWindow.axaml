@@ -11,6 +11,9 @@
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="ReadMD">
+    <Window.KeyBindings>
+        <KeyBinding Gesture="Ctrl+O" Command="{Binding TitleBarViewModel.OpenFileCommand}"/>
+    </Window.KeyBindings>
     <DockPanel>
         <view:TitleBarView DataContext="{Binding TitleBarViewModel}" DockPanel.Dock="Top" WindowDecorationProperties.ElementRole="TitleBar"/>
         <view:MainView DataContext="{Binding MainViewModel}"/>

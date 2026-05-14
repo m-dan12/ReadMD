@@ -15,6 +15,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<IReadingSettingsService, ReadingSettingsService>();
         services.AddSingleton<IWindowService, WindowService>();
+        services.AddSingleton<IFileDialogService, FileDialogService>();
+        services.AddSingleton<IMarkdownDocumentService, MarkdownDocumentService>();
 
         // ViewModels
         services.AddTransient<MainWindowViewModel>();

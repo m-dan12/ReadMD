@@ -6,6 +6,8 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FluentIcons.Common;
 using ReadMD.Services;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ReadMD.ViewModels;
 
@@ -14,6 +16,8 @@ public partial class TitleBarViewModel : ViewModelBase
     private readonly IThemeService _themeService;
     private readonly IReadingSettingsService _readingSettings;
     private readonly IWindowService _windowService;
+    private readonly IFileDialogService _fileDialogService;
+    private readonly IMarkdownDocumentService _markdownDocumentService;
 
     // Существующие свойства
     [ObservableProperty] private string _appTitle = "ReadMD";
@@ -29,11 +33,15 @@ public partial class TitleBarViewModel : ViewModelBase
     public TitleBarViewModel(
         IThemeService themeService,
         IReadingSettingsService readingSettings,
-        IWindowService windowService)
+        IWindowService windowService,
+        IFileDialogService fileDialogService,
+        IMarkdownDocumentService markdownDocumentService)
     {
         _themeService = themeService;
         _readingSettings = readingSettings;
         _windowService = windowService;
+        _fileDialogService = fileDialogService;
+        _markdownDocumentService = markdownDocumentService;
 
         _isDarkTheme = themeService.CurrentTheme == ThemeVariant.Dark;
         _lineWidth = readingSettings.LineWidth;
@@ -66,6 +74,16 @@ public partial class TitleBarViewModel : ViewModelBase
 
     [RelayCommand]
     private void Close() => _windowService.Close();
+
+    [RelayCommand]
+private async Task OpenFileAsync()
+{
+    var path = await _fileDialogService.ShowOpenMarkdownFileDialogAsync();
+    if (path is null) return;
+
+    var markdown = await File.ReadAllTextAsync(path);
+    _markdownDocumentService.Markdown = markdown;
+}
 
     partial void OnIsDarkThemeChanged(bool value)
     {
