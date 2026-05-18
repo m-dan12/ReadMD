@@ -25,11 +25,11 @@ public sealed class LocalizationService : ILocalizationService
 
     public UiStrings Strings { get; } = new();
 
-    public AppLanguage CurrentLanguage { get; private set; } = AppLanguage.System;
+    public AppLanguage CurrentLanguage { get; private set; } = AppLanguage.Russian;
 
     public event EventHandler? LanguageChanged;
 
-    public LocalizationService() => SetLanguage(AppLanguage.System);
+    public LocalizationService() => SetLanguage(AppLanguage.Russian);
 
     public void SetLanguage(AppLanguage language)
     {

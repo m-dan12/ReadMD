@@ -18,7 +18,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     private readonly IWindowService _windowService;
     private readonly IFileDialogService _fileDialogService;
     private readonly IMarkdownDocumentService _markdownDocumentService;
-    private readonly ILocalizationService _localization;
+    private readonly ILocalizationService _localizationService;
 
     [ObservableProperty] private string _appTitle = "ReadMD";
     [ObservableProperty] private bool _isDarkTheme;
@@ -31,7 +31,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     [ObservableProperty] private int _fontSize;
     [ObservableProperty] private LineSpacing _lineSpacing;
 
-    public UiStrings Texts => _localization.Strings;
+    public UiStrings Texts => _localizationService.Strings;
 
     public TitleBarViewModel(
         IThemeService themeService,
@@ -46,15 +46,15 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         _windowService = windowService;
         _fileDialogService = fileDialogService;
         _markdownDocumentService = markdownDocumentService;
-        _localization = localization;
+        _localizationService = localization;
 
         _isDarkTheme = themeService.CurrentTheme == ThemeVariant.Dark;
-        _selectedLanguageIndex = LanguageToIndex(_localization.CurrentLanguage);
-        AppTitle = _localization.Strings.FileNamePlaceholder;
+        _selectedLanguageIndex = LanguageToIndex(_localizationService.CurrentLanguage);
+        AppTitle = _localizationService.Strings.FileNamePlaceholder;
 
         SyncFromService();
         _readingSettings.SettingsChanged += SyncFromService;
-        _localization.LanguageChanged += OnLanguageChanged;
+        _localizationService.LanguageChanged += OnLanguageChanged;
     }
 
     private void OnLanguageChanged(object? sender, EventArgs e) =>
@@ -79,7 +79,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     partial void OnLineSpacingChanged(LineSpacing value) => _readingSettings.LineSpacing = value;
 
     partial void OnSelectedLanguageIndexChanged(int value) =>
-        _localization.SetLanguage(IndexToLanguage(value));
+        _localizationService.SetLanguage(IndexToLanguage(value));
 
     [RelayCommand]
     private void Minimize() => _windowService.Minimize();
@@ -120,20 +120,19 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     public void Dispose()
     {
         _readingSettings.SettingsChanged -= SyncFromService;
-        _localization.LanguageChanged -= OnLanguageChanged;
+        _localizationService.LanguageChanged -= OnLanguageChanged;
     }
 
     private static int LanguageToIndex(AppLanguage language) => language switch
     {
-        AppLanguage.Russian => 1,
-        AppLanguage.English => 2,
-        _ => 0
+        AppLanguage.Russian => 0,
+        _ => 1,
     };
 
     private static AppLanguage IndexToLanguage(int index) => index switch
     {
-        1 => AppLanguage.Russian,
-        2 => AppLanguage.English,
+        0 => AppLanguage.Russian,
+        1 => AppLanguage.English,
         _ => AppLanguage.System
     };
 }
