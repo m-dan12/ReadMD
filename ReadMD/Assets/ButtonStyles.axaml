@@ -37,7 +37,7 @@
         <Setter Property="WindowDecorationProperties.ElementRole" Value="User"/>
 
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#0A000000"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
             <Setter Property="Cursor"     Value="Hand"/>
         </Style>
 
@@ -67,7 +67,7 @@
             <Setter Property="BorderThickness" Value="1"/>
             <!-- При наведении граница сохраняется явно, т.к. ContentPresenter перекрывает её -->
             <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background"      Value="#0A000000"/>
+                <Setter Property="Background"      Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
                 <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
             </Style>
@@ -83,8 +83,8 @@
 
         <!-- Сегментированный переключатель (используется в попапе настроек) -->
         <Style Selector="^.check:checked /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="Background" Value="{DynamicResource ReadMDSegmentSelectedBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{DynamicResource ReadMDSegmentSelectedForegroundBrush}"/>
         </Style>
     </Style>
 
@@ -99,7 +99,7 @@
         <Setter Property="WindowDecorationProperties.ElementRole" Value="User"/>
 
         <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-            <Setter Property="Background" Value="#0A000000"/>
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
             <Setter Property="Cursor"     Value="Hand"/>
         </Style>
 
@@ -128,7 +128,7 @@
             <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background"      Value="#0A000000"/>
+                <Setter Property="Background"      Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
                 <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
             </Style>
@@ -153,7 +153,7 @@
             <Setter Property="BorderThickness" Value="1 1 0 1"/>
             <Setter Property="CornerRadius"    Value="4 0 0 4"/>
             <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background"      Value="#0A000000"/>
+                <Setter Property="Background"      Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
                 <Setter Property="BorderThickness" Value="1 1 0 1"/>
                 <Setter Property="CornerRadius"    Value="4 0 0 4"/>
             </Style>
@@ -162,7 +162,7 @@
             <Setter Property="BorderThickness" Value="0 1"/>
             <Setter Property="CornerRadius"    Value="0"/>
             <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background"       Value="#0A000000"/>
+                <Setter Property="Background"       Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
                 <Setter Property="BorderThickness"  Value="0 1"/>
                 <Setter Property="CornerRadius"     Value="0"/>
             </Style>
@@ -171,7 +171,7 @@
             <Setter Property="BorderThickness" Value="0 1 1 1"/>
             <Setter Property="CornerRadius"    Value="0 4 4 0"/>
             <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background"      Value="#0A000000"/>
+                <Setter Property="Background"      Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
                 <Setter Property="BorderThickness" Value="0 1 1 1"/>
                 <Setter Property="CornerRadius"    Value="0 4 4 0"/>
             </Style>
@@ -203,6 +203,10 @@
                               Classes="check m icon"/>
             </ControlTemplate>
         </Setter>
+    </Style>
+
+    <Style Selector="Svg">
+        <Setter Property="CurrentColor" Value="{DynamicResource SystemBaseHighColor}"/>
     </Style>
 
 </Styles>

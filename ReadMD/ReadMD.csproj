@@ -1,48 +1,51 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>WinExe</OutputType>
-    <TargetFramework>net10.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-  </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>WinExe</OutputType>
+		<TargetFramework>net10.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ApplicationManifest>app.manifest</ApplicationManifest>
+		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <Folder Include="Controls\" />
-    <Folder Include="Models\" />
-    <AvaloniaResource Include="Assets\**" />
-  </ItemGroup>
+	<ItemGroup>
+		<Folder Include="Controls\" />
+		<Folder Include="Models\" />
+		<AvaloniaResource Include="Assets\**" />
+	</ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Include="Assets\Fonts\*.ttf"/>
+	</ItemGroup>
 
-  <ItemGroup>
-    <AvaloniaXaml Remove="Assets\ButtonStyles.axaml" />
-  </ItemGroup>
+	<ItemGroup>
+		<AvaloniaXaml Remove="Assets\ButtonStyles.axaml" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="12.0.2" />
-    <PackageReference Include="Avalonia.Desktop" Version="12.0.2" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.2" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.2" />
-    <PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.1">
-      <IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
-      <PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
-    <PackageReference Include="MarkView.Avalonia" Version="12.0.2" />
-	<PackageReference Include="FluentIcons.Avalonia" Version="2.1.325" />
-	<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
-	<PackageReference Include="Svg.Controls.Avalonia" Version="12.0.0.7" />
-	<PackageReference Include="Svg.Controls.Skia.Avalonia" Version="12.0.0.7" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Avalonia" Version="12.0.2" />
+		<PackageReference Include="Avalonia.Desktop" Version="12.0.2" />
+		<PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.2" />
+		<PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.2" />
+		<PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.1">
+			<IncludeAssets Condition="'$(Configuration)' != 'Debug'">None</IncludeAssets>
+			<PrivateAssets Condition="'$(Configuration)' != 'Debug'">All</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
+		<PackageReference Include="MarkView.Avalonia" Version="12.0.2" />
+		<PackageReference Include="FluentIcons.Avalonia" Version="2.1.325" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.7" />
+		<PackageReference Include="Svg.Controls.Avalonia" Version="12.0.0.7" />
+		<PackageReference Include="Svg.Controls.Skia.Avalonia" Version="12.0.0.7" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <AvaloniaResource Update="Assets\ButtonStyles.axaml">
-      <SubType>Designer</SubType>
-    </AvaloniaResource>
-  </ItemGroup>
+	<ItemGroup>
+		<AvaloniaResource Update="Assets\ButtonStyles.axaml">
+			<SubType>Designer</SubType>
+		</AvaloniaResource>
+	</ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Views\TitleBarView.axaml.cs">
-      <DependentUpon>TitleBarView.axaml</DependentUpon>
-    </Compile>
-  </ItemGroup>
+	<ItemGroup>
+		<Compile Update="Views\TitleBarView.axaml.cs">
+			<DependentUpon>TitleBarView.axaml</DependentUpon>
+		</Compile>
+	</ItemGroup>
 </Project>

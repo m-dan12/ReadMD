@@ -3,14 +3,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:ReadMD.ViewModels"
-        xmlns:view="clr-namespace:ReadMD.Views"
+        xmlns:view="clr-namespace:ReadMD.Views" FontFamily="{StaticResource LatoFont}"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         ExtendClientAreaToDecorationsHint="True"
         WindowDecorations="BorderOnly"
         x:Class="ReadMD.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="ReadMD">
+        Title="{Binding TitleBarViewModel.Texts.AppName}">
     <Window.KeyBindings>
         <KeyBinding Gesture="Ctrl+O" Command="{Binding TitleBarViewModel.OpenFileCommand}"/>
     </Window.KeyBindings>

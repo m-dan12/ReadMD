@@ -1,298 +1,316 @@
 <UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:ic="using:FluentIcons.Avalonia"
-             xmlns:vm="clr-namespace:ReadMD.ViewModels"
-             mc:Ignorable="d"
-             d:DesignWidth="400" d:DesignHeight="400"
-             Background="Transparent"
-             x:Class="ReadMD.Views.TitleBarView"
-             x:DataType="vm:TitleBarViewModel">
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:ic="using:FluentIcons.Avalonia"
+			 xmlns:vm="clr-namespace:ReadMD.ViewModels"
+			 mc:Ignorable="d"
+			 d:DesignWidth="400" d:DesignHeight="400"
+			 Background="Transparent"
+			 x:Class="ReadMD.Views.TitleBarView"
+			 x:DataType="vm:TitleBarViewModel">
 
-    <UserControl.Styles>
-       
-
-        
-        <Style Selector="Border">
-            <!--
-            Общий стиль карточки попапа. Применяется к обоим всплывающим меню,
-            чтобы не дублировать Background / Border / BoxShadow.
-            -->
-             <Style Selector="^.PopupCard">
-                <Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
-                <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="CornerRadius"    Value="8"/>
-                <Setter Property="MinWidth"        Value="220"/>
-                <Setter Property="Margin"          Value="4"/>
-                <Setter Property="BoxShadow"       Value="0 0 4 0 #28000000"/>
-            </Style>
-             <!--
-            Стиль бейджа с горячей клавишей (Ctrl+O / Ctrl+W).
-            -->
-            <Style Selector="^.HotkeyBadge">
-                <Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
-                <Setter Property="BorderBrush"     Value="Gray"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Padding"         Value="4"/>
-                <Setter Property="CornerRadius"    Value="4"/>
-            </Style>
-            <!--
-            Стиль контейнера группы сегментированных элементов
-            (переключатели шрифта, интервала, ширины строки).
-            -->
-             <Style Selector="^.SegmentContainer">
-                <Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
-                <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-                <Setter Property="BorderThickness" Value="1"/>
-                <Setter Property="Padding"         Value="4"/>
-                <Setter Property="CornerRadius"    Value="8"/>
-            </Style>
-        </Style>
-    </UserControl.Styles>
+	<UserControl.Styles>
 
 
-    <DockPanel Margin="4">
 
-        <!-- ── Левая часть: кнопка бокового меню ─────────────────────── -->
-        <ToggleButton x:Name="BurgerButton"
-                      DockPanel.Dock="Left"
-                      Margin="0 0 8 0"
-                      Classes="m icon outline">
-            <ic:FluentIcon Icon="Navigation" FontSize="16"/>
-        </ToggleButton>
+		<Style Selector="Border">
+			<!--
+			Общий стиль карточки попапа. Применяется к обоим всплывающим меню,
+			чтобы не дублировать Background / Border / BoxShadow.
+			-->
+			<Style Selector="^.PopupCard">
+				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="CornerRadius"    Value="8"/>
+				<Setter Property="MinWidth"        Value="220"/>
+				<Setter Property="Margin"          Value="4"/>
+				<Setter Property="BoxShadow"       Value="{DynamicResource ReadMDPopupBoxShadow}"/>
+			</Style>
+			<Style Selector="^.SegmentValue">
+				<Setter Property="Background" Value="{DynamicResource ReadMDSegmentSelectedBackgroundBrush}"/>
+			</Style>
+			<!--
+			Стиль бейджа с горячей клавишей (Ctrl+O / Ctrl+W).
+			-->
+			<Style Selector="^.HotkeyBadge">
+				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Padding"         Value="4"/>
+				<Setter Property="CornerRadius"    Value="4"/>
+			</Style>
+			<!--
+			Стиль контейнера группы сегментированных элементов
+			(переключатели шрифта, интервала, ширины строки).
+			-->
+			<Style Selector="^.SegmentContainer">
+				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
+				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Padding"         Value="4"/>
+				<Setter Property="CornerRadius"    Value="8"/>
+			</Style>
+		</Style>
 
-        <!-- ── Правая часть: системные кнопки окна ───────────────────── -->
-        <StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
-            <Button Command="{Binding MinimizeCommand}" Classes="start m icon outline system">
-                <ic:FluentIcon Icon="Subtract" FontSize="16"/>
-            </Button>
-            <Button Command="{Binding MaximizeCommand}" Classes="gap m icon outline system">
-                <ic:FluentIcon Icon="{Binding MaximizeIcon}" FontSize="16"/>
-            </Button>
-            <Button Command="{Binding CloseCommand}"   Classes="end close m icon outline system">
-                <ic:FluentIcon Icon="Dismiss" FontSize="16"/>
-            </Button>
-        </StackPanel>
-
-        <!-- Кнопка редактирования -->
-        <Button DockPanel.Dock="Right" Classes="m icon outline" Margin="0 0 8 0">
-            <ic:FluentIcon Icon="Edit" FontSize="16"/>
-        </Button>
-
-        <!-- Кнопка настроек чтения -->
-        <ToggleButton x:Name="OptionsButton"
-                      DockPanel.Dock="Right"
-                      Classes="m icon outline"
-                      Margin="0 0 8 0">
-            <ic:FluentIcon Icon="Options" FontSize="16"/>
-        </ToggleButton>
-
-        <!-- Переключатель темы -->
-        <ToggleButton x:Name="ThemeToggleButton"
-                      DockPanel.Dock="Right"
-                      Classes="m icon theme outline"
-                      Margin="0 0 8 0"
-                      IsChecked="{Binding IsDarkTheme}">
-            <Panel>
-                <ic:FluentIcon Icon="WeatherMoon"
-                               IsVisible="{Binding #ThemeToggleButton.IsChecked,
-                                           Converter={x:Static BoolConverters.Not}}"/>
-                <ic:FluentIcon Icon="WeatherSunny"
-                               IsVisible="{Binding #ThemeToggleButton.IsChecked}"/>
-            </Panel>
-        </ToggleButton>
-
-        <!-- Заголовок -->
-        <TextBlock Text="Название файла" VerticalAlignment="Center"/>
+		<Style Selector="TextBlock.OptionsLabel">
+			<Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+		</Style>
+	</UserControl.Styles>
 
 
-        <!-- ══════════════════════════════════════════════════════════════
-             Попап: боковое меню (бургер)
-        ══════════════════════════════════════════════════════════════ -->
-        <Popup x:Name="BurgerPopup"
-               IsOpen="{Binding #BurgerButton.IsChecked, Mode=TwoWay}"
-               PlacementTarget="{Binding #BurgerButton}"
-               PlacementAnchor="BottomLeft"
-               PlacementGravity="BottomLeft"
-               IsLightDismissEnabled="True"
-               Margin="4">
+	<DockPanel Margin="4">
 
-            <Border Classes="PopupCard">
-                <StackPanel Spacing="12">
+		<!-- ── Левая часть: кнопка бокового меню ─────────────────────── -->
+		<ToggleButton x:Name="BurgerButton"
+					  DockPanel.Dock="Left"
+					  Margin="0 0 8 0"
+					  Classes="m icon outline">
+			<ic:FluentIcon Icon="Navigation" FontSize="16"/>
+		</ToggleButton>
 
-                    <!-- Заголовок попапа + кнопка закрытия -->
-                    <Grid ColumnDefinitions="* auto" Margin="16 16 16 0">
-                        <TextBlock Text="Меню"
-                                   FontSize="16" FontWeight="Medium" Foreground="Gray"
-                                   Margin="12 0 0 0" VerticalAlignment="Center"/>
-                        <ToggleButton Grid.Column="1"
-                                      Classes="m icon"
-                                      BorderThickness="0"
-                                      IsChecked="{Binding !#BurgerButton.IsChecked, Mode=TwoWay}">
-                            <ic:FluentIcon Icon="Dismiss" FontSize="24" Foreground="Gray"/>
-                        </ToggleButton>
-                    </Grid>
+		<!-- ── Правая часть: системные кнопки окна ───────────────────── -->
+		<StackPanel DockPanel.Dock="Right" Orientation="Horizontal">
+			<Button Command="{Binding MinimizeCommand}" Classes="start m icon outline system">
+				<ic:FluentIcon Icon="Subtract" FontSize="16"/>
+			</Button>
+			<Button Command="{Binding MaximizeCommand}" Classes="gap m icon outline system">
+				<ic:FluentIcon Icon="{Binding MaximizeIcon}" FontSize="16"/>
+			</Button>
+			<Button Command="{Binding CloseCommand}"   Classes="end close m icon outline system">
+				<ic:FluentIcon Icon="Dismiss" FontSize="16"/>
+			</Button>
+		</StackPanel>
 
-                    <Separator Margin="0" Opacity="0.3"/>
+		<!-- Кнопка редактирования -->
+		<Button DockPanel.Dock="Right" Classes="m icon outline" Margin="0 0 8 0">
+			<ic:FluentIcon Icon="Edit" FontSize="16"/>
+		</Button>
 
-                    <!-- Пункты меню -->
-                    <Button Classes="Menu l" Command="{Binding OpenFileCommand}">
-                        <Grid ColumnDefinitions="* auto">
-                            <TextBlock Text="Открыть файл" Margin="0 0 28 0" VerticalAlignment="Center"/>
-                            <Border Grid.Column="1" Classes="HotkeyBadge" VerticalAlignment="Center">
-                                <TextBlock Text="Ctrl + O" FontSize="10"/>
-                            </Border>
-                        </Grid>
-                    </Button>
-                    <Button Classes="Menu l">
-                        <Grid ColumnDefinitions="* auto">
-                            <TextBlock Text="Закрыть файл" Margin="0 0 28 0" VerticalAlignment="Center"/>
-                            <Border Grid.Column="1" Classes="HotkeyBadge" VerticalAlignment="Center">
-                                <TextBlock Text="Ctrl + W" FontSize="10"/>
-                            </Border>
-                        </Grid>
-                    </Button>
+		<!-- Кнопка настроек чтения -->
+		<ToggleButton x:Name="OptionsButton"
+					  DockPanel.Dock="Right"
+					  Classes="m icon outline"
+					  Margin="0 0 8 0">
+			<ic:FluentIcon Icon="Options" FontSize="16"/>
+		</ToggleButton>
 
-                    <!-- Выбор языка -->
-                    <Grid ColumnDefinitions="* auto" Margin="16 0 16 16">
-                        <TextBlock Text="Язык" Margin="12 0 28 0" VerticalAlignment="Center"/>
-                        <ComboBox Grid.Column="1"
-                                  SelectedIndex="0"
-                                  Width="124" Height="44"
-                                  BorderBrush="LightGray">
-                            <ComboBoxItem Content="Системный"/>
-                            <ComboBoxItem Content="Русский"/>
-                            <ComboBoxItem Content="English"/>
-                        </ComboBox>
-                    </Grid>
+		<!-- Переключатель темы -->
+		<ToggleButton x:Name="ThemeToggleButton"
+					  DockPanel.Dock="Right"
+					  Classes="m icon theme outline"
+					  Margin="0 0 8 0"
+					  IsChecked="{Binding IsDarkTheme}">
+			<Panel>
+				<ic:FluentIcon Icon="WeatherMoon"
+							   IsVisible="{Binding #ThemeToggleButton.IsChecked,
+							   Converter={x:Static BoolConverters.Not}}"/>
+				<ic:FluentIcon Icon="WeatherSunny"
+							   IsVisible="{Binding #ThemeToggleButton.IsChecked}"/>
+			</Panel>
+		</ToggleButton>
 
-                </StackPanel>
-            </Border>
-        </Popup>
+		<!-- Заголовок -->
+		<TextBlock Text="{Binding AppTitle}" VerticalAlignment="Center"/>
 
 
-        <!-- ══════════════════════════════════════════════════════════════
-             Попап: настройки чтения
-        ══════════════════════════════════════════════════════════════ -->
-        <Popup x:Name="OptionsPopup"
-               IsOpen="{Binding #OptionsButton.IsChecked, Mode=TwoWay}"
-               PlacementTarget="{Binding #OptionsButton}"
-               PlacementAnchor="BottomRight"
-               PlacementGravity="BottomRight"
-               IsLightDismissEnabled="True"
-               Margin="4">
+		<!-- ══════════════════════════════════════════════════════════════
+		Попап: боковое меню (бургер)
+		══════════════════════════════════════════════════════════════ -->
+		<Popup x:Name="BurgerPopup"
+			   IsOpen="{Binding #BurgerButton.IsChecked, Mode=TwoWay}"
+			   PlacementTarget="{Binding #BurgerButton}"
+			   PlacementAnchor="BottomLeft"
+			   PlacementGravity="BottomLeft"
+			   IsLightDismissEnabled="True"
+			   Margin="4">
 
-            <Border Classes="PopupCard">
-                <StackPanel Spacing="12">
+			<Border Classes="PopupCard">
+				<StackPanel Spacing="12">
 
-                    <!-- Заголовок попапа + кнопка закрытия -->
-                    <Grid ColumnDefinitions="* auto" Margin="16 16 16 0">
-                        <TextBlock Text="Чтение"
-                                   FontSize="16" FontWeight="Medium" Foreground="Gray"
-                                   Margin="12 0 0 0" VerticalAlignment="Center"/>
-                        <ToggleButton Grid.Column="1"
-                                      Classes="m icon"
-                                      BorderThickness="0"
-                                      IsChecked="{Binding !#OptionsButton.IsChecked, Mode=TwoWay}">
-                            <ic:FluentIcon Icon="Dismiss" FontSize="24" Foreground="Gray"/>
-                        </ToggleButton>
-                    </Grid>
+					<!-- Заголовок попапа + кнопка закрытия -->
+					<Grid ColumnDefinitions="* auto" Margin="16 16 16 0">
+						<TextBlock Text="{Binding Texts.Menu}"
+								   FontSize="16" FontWeight="Medium" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+								   Margin="12 0 0 0" VerticalAlignment="Center"/>
+						<ToggleButton Grid.Column="1"
+									  Classes="m icon"
+									  BorderThickness="0"
+									  IsChecked="{Binding !#BurgerButton.IsChecked, Mode=TwoWay}">
+							<ic:FluentIcon Icon="Dismiss" FontSize="24" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+						</ToggleButton>
+					</Grid>
 
-                    <Separator Margin="0" Opacity="0.3"/>
+					<Separator Margin="0" Opacity="0.3"/>
 
-                    <!-- Шрифт: с засечками / без -->
-                    <Grid ColumnDefinitions="* auto" Margin="16 0">
-                        <TextBlock Text="Шрифт" Margin="12 0 28 0" VerticalAlignment="Center"/>
-                        <Border Grid.Column="1" Classes="SegmentContainer">
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <ToggleButton x:Name="Serifs"
-                                              IsChecked="True"
-                                              Content="С засечками"
-                                              Classes="check m"
-                                              VerticalContentAlignment="Center"
-                                              Padding="12 0"/>
-                                <ToggleButton IsChecked="{Binding !#Serifs.IsChecked, Mode=TwoWay}"
-                                              Content="Без засечек"
-                                              Classes="check m"
-                                              VerticalContentAlignment="Center"
-                                              Padding="12 0"
-                                              Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
-                                              BorderBrush="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
+					<!-- Пункты меню -->
+					<Button Classes="Menu l" Command="{Binding OpenFileCommand}">
+						<Grid ColumnDefinitions="* auto">
+							<TextBlock Text="{Binding Texts.OpenFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>
+							<Border Grid.Column="1" Classes="HotkeyBadge" VerticalAlignment="Center">
+								<TextBlock Text="Ctrl + O" FontSize="10"/>
+							</Border>
+						</Grid>
+					</Button>
+					<Button Classes="Menu l">
+						<Grid ColumnDefinitions="* auto">
+							<TextBlock Text="{Binding Texts.CloseFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>
+							<Border Grid.Column="1" Classes="HotkeyBadge" VerticalAlignment="Center">
+								<TextBlock Text="Ctrl + W" FontSize="10"/>
+							</Border>
+						</Grid>
+					</Button>
 
-                    <!-- Размер шрифта: − / значение / + -->
-                    <Grid ColumnDefinitions="* auto" Margin="16 0">
-                        <TextBlock Text="Размер шрифта" Margin="12 0 28 0" VerticalAlignment="Center"/>
-                        <Border Grid.Column="1" Classes="SegmentContainer">
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <Button Classes="check m icon">
-                                    <Svg Path="/Assets/icons/icon-minus.svg" CurrentColor="Black"/>
-                                </Button>
-                                <Border Background="White" Height="36" Width="36" CornerRadius="4">
-                                    <TextBlock Text="14"
-                                               VerticalAlignment="Center"
-                                               HorizontalAlignment="Center"/>
-                                </Border>
-                                <Button Classes="check m icon">
-                                    <Svg Path="/Assets/icons/icon-plus.svg" CurrentColor="Black"/>
-                                </Button>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
+					<!-- Выбор языка -->
+					<Grid ColumnDefinitions="* auto" Margin="16 0 16 16">
+						<TextBlock Text="{Binding Texts.Language}" Margin="12 0 28 0" VerticalAlignment="Center"/>
+						<ComboBox Grid.Column="1"
+								  SelectedIndex="{Binding SelectedLanguageIndex}"
+								  Width="124" Height="44"
+								  BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+							<ComboBoxItem Content="{Binding Texts.LanguageRussian}"/>
+							<ComboBoxItem Content="{Binding Texts.LanguageEnglish}"/>
+						</ComboBox>
+					</Grid>
 
-                    <!-- Интервал -->
-                    <Grid ColumnDefinitions="* auto" Margin="16 0">
-                        <TextBlock Text="Интервал" Margin="12 0 28 0" VerticalAlignment="Center"/>
-                        <Border Grid.Column="1" Classes="SegmentContainer">
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <RadioButton Classes="Toggle">
-                                    <Svg Path="/Assets/icons/icon-interval-s.svg" CurrentColor="Black"/>
-                                </RadioButton>
-                                <RadioButton Classes="Toggle" IsChecked="True">
-                                    <Svg Path="/Assets/icons/icon-interval-m.svg" CurrentColor="Black"/>
-                                </RadioButton>
-                                <RadioButton Classes="Toggle">
-                                    <Svg Path="/Assets/icons/icon-interval-l.svg" CurrentColor="Black"/>
-                                </RadioButton>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
+				</StackPanel>
+			</Border>
+		</Popup>
 
-                    <!-- Ширина строки -->
-                    <Grid ColumnDefinitions="* auto" Margin="16 0 16 16">
-                        <TextBlock Text="Ширина строки" Margin="12 0 28 0" VerticalAlignment="Center"/>
-                        <Border Grid.Column="1" Classes="SegmentContainer">
-                            <StackPanel Orientation="Horizontal" Spacing="4">
-                                <RadioButton Classes="Toggle"
-                                             GroupName="LineWidthGroup"
-                                             IsChecked="{Binding LineWidth, Converter={StaticResource EnumToBoolConverter}, 
-                                                                ConverterParameter=Narrow, Mode=TwoWay}">
-                                    <Svg Path="/Assets/icons/icon-line-width-s.svg" CurrentColor="Black"/>
-                                </RadioButton>
-    
-                                <RadioButton Classes="Toggle"
-                                             GroupName="LineWidthGroup"
-                                             IsChecked="{Binding LineWidth, Converter={StaticResource EnumToBoolConverter}, 
-                                                                ConverterParameter=Medium, Mode=TwoWay}">
-                                    <Svg Path="/Assets/icons/icon-line-width-m.svg" CurrentColor="Black"/>
-                                </RadioButton>
-    
-                                <RadioButton Classes="Toggle"
-                                             GroupName="LineWidthGroup"
-                                             IsChecked="{Binding LineWidth, Converter={StaticResource EnumToBoolConverter}, 
-                                                                ConverterParameter=Wide, Mode=TwoWay}">
-                                    <Svg Path="/Assets/icons/icon-line-width-l.svg" CurrentColor="Black"/>
-                                </RadioButton>
-                            </StackPanel>
-                        </Border>
-                    </Grid>
 
-                </StackPanel>
-            </Border>
-        </Popup>
-    </DockPanel>
+		<!-- ══════════════════════════════════════════════════════════════
+		Попап: настройки чтения
+		══════════════════════════════════════════════════════════════ -->
+		<Popup x:Name="OptionsPopup"
+			   IsOpen="{Binding #OptionsButton.IsChecked, Mode=TwoWay}"
+			   PlacementTarget="{Binding #OptionsButton}"
+			   PlacementAnchor="BottomRight"
+			   PlacementGravity="BottomRight"
+			   IsLightDismissEnabled="True"
+			   Margin="4">
+
+			<Border Classes="PopupCard">
+				<StackPanel Spacing="12">
+
+					<!-- Заголовок + кнопка закрытия -->
+					<Grid ColumnDefinitions="* auto" Margin="16 16 16 0">
+						<TextBlock Text="{Binding Texts.Reading}"
+								   FontSize="16" FontWeight="Medium" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+								   Margin="12 0 0 0" VerticalAlignment="Center"/>
+						<ToggleButton Grid.Column="1"
+									  Classes="m icon"
+									  BorderThickness="0"
+									  IsChecked="{Binding !#OptionsButton.IsChecked, Mode=TwoWay}">
+							<ic:FluentIcon Icon="Dismiss" FontSize="24" Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+						</ToggleButton>
+					</Grid>
+
+					<Separator Margin="0" Opacity="0.3"/>
+
+					<!-- Шрифт: с засечками / без -->
+					<Grid ColumnDefinitions="* auto" Margin="16 0">
+						<TextBlock Text="{Binding Texts.Font}" Classes="OptionsLabel" Margin="12 0 28 0" VerticalAlignment="Center"/>
+						<Border Grid.Column="1" Classes="SegmentContainer">
+							<StackPanel Orientation="Horizontal" Spacing="4">
+								<ToggleButton x:Name="Serifs"
+											  IsChecked="{Binding UseSerifs}"
+											  Content="{Binding Texts.FontSerif}"
+											  Classes="check m"
+											  VerticalContentAlignment="Center"
+											  Padding="12 0"/>
+								<ToggleButton IsChecked="{Binding !#Serifs.IsChecked, Mode=TwoWay}"
+											  Content="{Binding Texts.FontSansSerif}"
+											  Classes="check m"
+											  VerticalContentAlignment="Center"
+											  Padding="12 0"/>
+							</StackPanel>
+						</Border>
+					</Grid>
+
+					<!-- Размер шрифта: − / значение / + -->
+					<Grid ColumnDefinitions="* auto" Margin="16 0">
+						<TextBlock Text="{Binding Texts.FontSize}" Classes="OptionsLabel" Margin="12 0 28 0" VerticalAlignment="Center"/>
+						<Border Grid.Column="1" Classes="SegmentContainer">
+							<StackPanel Orientation="Horizontal" Spacing="4">
+								<Button Classes="check m icon" Command="{Binding DecreaseFontSizeCommand}">
+									<Svg Path="/Assets/Icons/icon-minus.svg"/>
+								</Button>
+								<Border Classes="SegmentValue" Height="36" Width="36" CornerRadius="4">
+									<TextBlock Text="{Binding FontSize}"
+											   Foreground="{DynamicResource ReadMDSegmentSelectedForegroundBrush}"
+											   VerticalAlignment="Center"
+											   HorizontalAlignment="Center"/>
+								</Border>
+								<Button Classes="check m icon" Command="{Binding IncreaseFontSizeCommand}">
+									<Svg Path="/Assets/Icons/icon-plus.svg"/>
+								</Button>
+							</StackPanel>
+						</Border>
+					</Grid>
+
+					<!-- Интервал -->
+					<Grid ColumnDefinitions="* auto" Margin="16 0">
+						<TextBlock Text="{Binding Texts.LineSpacing}" Classes="OptionsLabel" Margin="12 0 28 0" VerticalAlignment="Center"/>
+						<Border Grid.Column="1" Classes="SegmentContainer">
+							<StackPanel Orientation="Horizontal" Spacing="4">
+								<RadioButton Classes="Toggle"
+											 GroupName="LineSpacingGroup"
+											 IsChecked="{Binding LineSpacing,
+											 Converter={StaticResource EnumToBoolConverter},
+											 ConverterParameter=Compact, Mode=TwoWay}">
+									<Svg Path="/Assets/Icons/icon-interval-s.svg"/>
+								</RadioButton>
+								<RadioButton Classes="Toggle"
+											 GroupName="LineSpacingGroup"
+											 IsChecked="{Binding LineSpacing,
+											 Converter={StaticResource EnumToBoolConverter},
+											 ConverterParameter=Normal, Mode=TwoWay}">
+									<Svg Path="/Assets/Icons/icon-interval-m.svg"/>
+								</RadioButton>
+								<RadioButton Classes="Toggle"
+											 GroupName="LineSpacingGroup"
+											 IsChecked="{Binding LineSpacing,
+											 Converter={StaticResource EnumToBoolConverter},
+											 ConverterParameter=Relaxed, Mode=TwoWay}">
+									<Svg Path="/Assets/Icons/icon-interval-l.svg"/>
+								</RadioButton>
+							</StackPanel>
+						</Border>
+					</Grid>
+
+					<!-- Ширина строки -->
+					<Grid ColumnDefinitions="* auto" Margin="16 0 16 16">
+						<TextBlock Text="{Binding Texts.LineWidth}" Classes="OptionsLabel" Margin="12 0 28 0" VerticalAlignment="Center"/>
+						<Border Grid.Column="1" Classes="SegmentContainer">
+							<StackPanel Orientation="Horizontal" Spacing="4">
+								<RadioButton Classes="Toggle"
+											 GroupName="LineWidthGroup"
+											 IsChecked="{Binding LineWidth,
+											 Converter={StaticResource EnumToBoolConverter},
+											 ConverterParameter=Narrow, Mode=TwoWay}">
+									<Svg Path="/Assets/Icons/icon-line-width-s.svg"/>
+								</RadioButton>
+								<RadioButton Classes="Toggle"
+											 GroupName="LineWidthGroup"
+											 IsChecked="{Binding LineWidth,
+											 Converter={StaticResource EnumToBoolConverter},
+											 ConverterParameter=Medium, Mode=TwoWay}">
+									<Svg Path="/Assets/Icons/icon-line-width-m.svg"/>
+								</RadioButton>
+								<RadioButton Classes="Toggle"
+											 GroupName="LineWidthGroup"
+											 IsChecked="{Binding LineWidth,
+											 Converter={StaticResource EnumToBoolConverter},
+											 ConverterParameter=Wide, Mode=TwoWay}">
+									<Svg Path="/Assets/Icons/icon-line-width-l.svg"/>
+								</RadioButton>
+							</StackPanel>
+						</Border>
+					</Grid>
+
+				</StackPanel>
+			</Border>
+		</Popup>
+	</DockPanel>
 </UserControl>

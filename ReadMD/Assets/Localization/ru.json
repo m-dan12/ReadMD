@@ -1,0 +1,18 @@
+{
+  "AppName": "ReadMD",
+  "FileNamePlaceholder": "Название файла",
+  "Menu": "Меню",
+  "OpenFile": "Открыть файл",
+  "CloseFile": "Закрыть файл",
+  "Language": "Язык",
+  "LanguageSystem": "Системный",
+  "LanguageRussian": "Русский",
+  "LanguageEnglish": "English",
+  "Reading": "Чтение",
+  "Font": "Шрифт",
+  "FontSerif": "С засечками",
+  "FontSansSerif": "Без засечек",
+  "FontSize": "Размер шрифта",
+  "LineSpacing": "Интервал",
+  "LineWidth": "Ширина строки"
+}

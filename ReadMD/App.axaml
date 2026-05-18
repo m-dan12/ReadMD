@@ -1,27 +1,48 @@
 <Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="ReadMD.App"
-             xmlns:local="using:ReadMD"
-             xmlns:converters="clr-namespace:ReadMD.Converters"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 x:Class="ReadMD.App"
+			 xmlns:local="using:ReadMD"
+			 xmlns:converters="clr-namespace:ReadMD.Converters"
+			 RequestedThemeVariant="Default">
+	<!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
+	<Application.DataTemplates>
+		<local:ViewLocator/>
+	</Application.DataTemplates>
 
-    <Application.Resources>
-        <converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
-    </Application.Resources>
+	<Application.Resources>
+		<ResourceDictionary>
+			<converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+			<FontFamily x:Key="LatoFont">avares://ReadMD/Assets/Fonts#Lato</FontFamily>
+			<FontFamily x:Key="LoraFont">avares://ReadMD/Assets/Fonts#Lora</FontFamily>
+			<ResourceDictionary.ThemeDictionaries>
+				<ResourceDictionary x:Key="Default">
+					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 4 0 #28000000</BoxShadows>
+					<SolidColorBrush x:Key="ReadMDSegmentSelectedBackgroundBrush" Color="#FFFFFFFF"/>
+					<SolidColorBrush x:Key="ReadMDSegmentSelectedForegroundBrush" Color="#FF000000"/>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key="Light">
+					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 4 0 #28000000</BoxShadows>
+					<SolidColorBrush x:Key="ReadMDSegmentSelectedBackgroundBrush" Color="#FFFFFFFF"/>
+					<SolidColorBrush x:Key="ReadMDSegmentSelectedForegroundBrush" Color="#FF000000"/>
+				</ResourceDictionary>
+				<ResourceDictionary x:Key="Dark">
+					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 12 0 #80000000</BoxShadows>
+					<SolidColorBrush x:Key="ReadMDSegmentSelectedBackgroundBrush" Color="#FF3B3B3B"/>
+					<SolidColorBrush x:Key="ReadMDSegmentSelectedForegroundBrush" Color="#FFFFFFFF"/>
+				</ResourceDictionary>
+			</ResourceDictionary.ThemeDictionaries>
+		</ResourceDictionary>
+	</Application.Resources>
 
-    <Application.Styles>
-        <FluentTheme>
-            <FluentTheme.Palettes>
-                <ColorPaletteResources x:Key="Light" Accent="Black" />
-                <ColorPaletteResources x:Key="Dark" Accent="White" />
-            </FluentTheme.Palettes>
-        </FluentTheme>
-        <StyleInclude Source="avares://MarkView.Avalonia/Themes/MarkdownTheme.axaml" />
-        <StyleInclude Source="/Assets/ButtonStyles.axaml" />
-    </Application.Styles>
+	<Application.Styles>
+		<FluentTheme>
+			<FluentTheme.Palettes>
+				<ColorPaletteResources x:Key="Light" Accent="Black" />
+				<ColorPaletteResources x:Key="Dark" Accent="White" />
+			</FluentTheme.Palettes>
+		</FluentTheme>
+		<StyleInclude Source="avares://MarkView.Avalonia/Themes/MarkdownTheme.axaml" />
+		<StyleInclude Source="/Assets/ButtonStyles.axaml" />
+	</Application.Styles>
 </Application>

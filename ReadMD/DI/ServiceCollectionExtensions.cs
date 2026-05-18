@@ -13,6 +13,7 @@ public static class ServiceCollectionExtensions
     {
         //Services
         services.AddSingleton<IThemeService, ThemeService>();
+        services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddSingleton<IReadingSettingsService, ReadingSettingsService>();
         services.AddSingleton<IWindowService, WindowService>();
         services.AddSingleton<IFileDialogService, FileDialogService>();

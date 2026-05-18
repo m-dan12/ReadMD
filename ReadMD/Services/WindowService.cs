@@ -6,7 +6,7 @@ namespace ReadMD.Services;
 
 public interface IWindowService
 {
-    WindowState getWindowState();
+    WindowState GetWindowState();
     void Initialize(Window window);
     void Minimize();
     void Maximize();
@@ -18,7 +18,7 @@ public class WindowService : IWindowService
     private Window? _window;
     private Window Window => _window
         ?? throw new InvalidOperationException("WindowService не инициализирован");
-    public WindowState getWindowState() => Window.WindowState;
+    public WindowState GetWindowState() => Window.WindowState;
     public void Initialize(Window window) => _window = window;
     public void Minimize() => Window.WindowState = WindowState.Minimized;
     public void Maximize() => Window.WindowState = Window.WindowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized;
