@@ -4,6 +4,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
+using MarkView.Avalonia;
 using ReadMD.ViewModels;
 using System;
 

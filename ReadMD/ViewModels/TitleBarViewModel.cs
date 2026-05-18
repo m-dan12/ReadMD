@@ -102,8 +102,9 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         var path = await _fileDialogService.ShowOpenMarkdownFileDialogAsync();
         if (path is null) return;
 
-        var markdown = await File.ReadAllTextAsync(path);
-        _markdownDocumentService.Markdown = markdown;
+        _markdownDocumentService.FilePath = path;
+        _markdownDocumentService.Markdown = await File.ReadAllTextAsync(path);
+
         AppTitle = Path.GetFileName(path);
     }
 
