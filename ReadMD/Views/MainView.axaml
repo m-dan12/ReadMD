@@ -7,90 +7,244 @@
 			 mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
 			 x:Class="ReadMD.Views.MainView"
 			 x:DataType="vm:MainViewModel">
-	<ScrollViewer x:Name="MainScroller"
-				  Grid.Column="0"
-				  HorizontalScrollBarVisibility="Disabled"
-				  VerticalScrollBarVisibility="Visible"
-				  AllowAutoHide="False">
-		<ScrollViewer.Styles>
-			<Style Selector="ScrollBar">
-				<Setter Property="MinWidth" Value="8" />
-				<Setter Property="Margin" Value="0" />
-			</Style>
-			<Style Selector="ScrollBar:vertical Thumb">
-				<Setter Property="CornerRadius" Value="3" />
-				<Setter Property="Width" Value="6" />
-				<Setter Property="Margin" Value="4" />
-				<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
-			</Style>
-			<Style Selector="ScrollBar Thumb:pointerover">
-				<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumHighBrush}" />
-			</Style>
-			<Style Selector="ScrollBar /template/ RepeatButton#PART_LineUpButton, ScrollBar /template/ RepeatButton#PART_LineDownButton">
-				<Setter Property="IsVisible" Value="False" />
-				<Setter Property="Height" Value="0" />
-			</Style>
-			<Style Selector="ScrollBar /template/ Rectangle#TrackRect">
-				<Setter Property="IsVisible" Value="False" />
-			</Style>
-		</ScrollViewer.Styles>
-		<mv:MarkdownViewer x:Name="MarkdownViewer" Markdown="{Binding Markdown}"
-						   Width="{Binding LineWidthWidth}"
-						   MaxWidth="{Binding LineWidthMaxWidth}"
-						   Margin="0 0 0 120">
-			<mv:MarkdownViewer.Styles>
-				<Style Selector="ScrollViewer">
-					<Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+	<Panel>
+		<!-- ── Режим просмотра: только превью ─────────────────────────── -->
+		<ScrollViewer x:Name="MainScroller"
+					  IsVisible="{Binding IsEditMode, Converter={x:Static BoolConverters.Not}}"
+					  HorizontalScrollBarVisibility="Disabled"
+					  VerticalScrollBarVisibility="Visible"
+					  AllowAutoHide="False">
+			<ScrollViewer.Styles>
+				<Style Selector="ScrollBar">
+					<Setter Property="MinWidth" Value="8" />
+					<Setter Property="Margin" Value="0" />
 				</Style>
-				<Style Selector=":is(TextBlock).markdown-paragraph">
-					<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-					<Setter Property="FontSize"   Value="{Binding FontSize}"/>
-					<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
-					<Setter Property="ClipToBounds" Value="False"/>
+				<Style Selector="ScrollBar:vertical Thumb">
+					<Setter Property="CornerRadius" Value="3" />
+					<Setter Property="Width" Value="6" />
+					<Setter Property="Margin" Value="4" />
+					<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
 				</Style>
-				<Style Selector=":is(TextBlock).markdown-list-marker">
-					<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-					<Setter Property="FontSize"   Value="{Binding FontSize}"/>
-					<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
-					<Setter Property="ClipToBounds" Value="False"/>
+				<Style Selector="ScrollBar Thumb:pointerover">
+					<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumHighBrush}" />
 				</Style>
-				<Style Selector=":is(TextBlock).markdown-h1">
-					<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-					<Setter Property="FontSize"   Value="{Binding H1Size}"/>
-					<Setter Property="LineHeight" Value="{Binding H1LineHeight}"/>
-					<Setter Property="ClipToBounds" Value="False"/>
+				<Style Selector="ScrollBar /template/ RepeatButton#PART_LineUpButton, ScrollBar /template/ RepeatButton#PART_LineDownButton">
+					<Setter Property="IsVisible" Value="False" />
+					<Setter Property="Height" Value="0" />
 				</Style>
-				<Style Selector=":is(TextBlock).markdown-h2">
-					<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-					<Setter Property="FontSize"   Value="{Binding H2Size}"/>
-					<Setter Property="LineHeight" Value="{Binding H2LineHeight}"/>
-					<Setter Property="ClipToBounds" Value="False"/>
+				<Style Selector="ScrollBar /template/ Rectangle#TrackRect">
+					<Setter Property="IsVisible" Value="False" />
 				</Style>
-				<Style Selector=":is(TextBlock).markdown-h3">
-					<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-					<Setter Property="FontSize"   Value="{Binding H3Size}"/>
-					<Setter Property="LineHeight" Value="{Binding H3LineHeight}"/>
-					<Setter Property="ClipToBounds" Value="False"/>
+			</ScrollViewer.Styles>
+			<mv:MarkdownViewer x:Name="MarkdownViewer" Markdown="{Binding Markdown}"
+							   Width="{Binding LineWidthWidth}"
+							   MaxWidth="{Binding LineWidthMaxWidth}"
+							   Margin="0 0 0 120">
+				<mv:MarkdownViewer.Styles>
+					<Style Selector="ScrollViewer">
+						<Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-paragraph">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding FontSize}"/>
+						<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-list-marker">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding FontSize}"/>
+						<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-h1">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding H1Size}"/>
+						<Setter Property="LineHeight" Value="{Binding H1LineHeight}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-h2">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding H2Size}"/>
+						<Setter Property="LineHeight" Value="{Binding H2LineHeight}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-h3">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding H3Size}"/>
+						<Setter Property="LineHeight" Value="{Binding H3LineHeight}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-h4">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding H4Size}"/>
+						<Setter Property="LineHeight" Value="{Binding H4LineHeight}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-h5">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding H5Size}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+						<Setter Property="LineHeight" Value="{Binding H5LineHeight}"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-h6">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding H6Size}"/>
+						<Setter Property="LineHeight" Value="{Binding H6LineHeight}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+					</Style>
+				</mv:MarkdownViewer.Styles>
+			</mv:MarkdownViewer>
+		</ScrollViewer>
+
+		<!-- ── Режим редактирования: текстовый редактор и превью ─────── -->
+		<Grid IsVisible="{Binding IsEditMode}" ColumnDefinitions="*,Auto,*">
+			<Grid.Styles>
+				<Style Selector="TextBox">
+					<Setter Property="Padding" Value="12"/>
+					<Setter Property="FontFamily" Value="{DynamicResource FiraFont}"/>
+					<Setter Property="FontSize" Value="14"/>
+					<Setter Property="LineHeight" Value="21"/>
+					<Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+					<Setter Property="Background" Value="{DynamicResource TextControlBackground}"/>
+					<Setter Property="CornerRadius" Value="0"/>
+					<Setter Property="BorderThickness" Value="0"/>
+					<Style Selector="^:focus /template/ Border#PART_BorderElement">
+						<Setter Property="BorderThickness" Value="0"/>
+						<Setter Property="BorderBrush" Value="Transparent"/>
+					</Style>
 				</Style>
-				<Style Selector=":is(TextBlock).markdown-h4">
-					<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-					<Setter Property="FontSize"   Value="{Binding H4Size}"/>
-					<Setter Property="LineHeight" Value="{Binding H4LineHeight}"/>
-					<Setter Property="ClipToBounds" Value="False"/>
+				<Style Selector="GridSplitter">
+					<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
 				</Style>
-				<Style Selector=":is(TextBlock).markdown-h5">
-					<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-					<Setter Property="FontSize"   Value="{Binding H5Size}"/>
-					<Setter Property="ClipToBounds" Value="False"/>
-					<Setter Property="LineHeight" Value="{Binding H5LineHeight}"/>
-				</Style>
-				<Style Selector=":is(TextBlock).markdown-h6">
-					<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-					<Setter Property="FontSize"   Value="{Binding H6Size}"/>
-					<Setter Property="LineHeight" Value="{Binding H6LineHeight}"/>
-					<Setter Property="ClipToBounds" Value="False"/>
-				</Style>
-			</mv:MarkdownViewer.Styles>
-		</mv:MarkdownViewer>
-	</ScrollViewer>
+			</Grid.Styles>
+
+			<!-- ── Левая часть: TextBox с исходным кодом ──────────────── -->
+			<TextBox Grid.Column="0"
+					 Text="{Binding MarkdownSource}"
+					 Margin="0"
+					 AcceptsReturn="True"
+					 TextWrapping="Wrap"
+					 VerticalAlignment="Stretch"
+					 HorizontalAlignment="Stretch"
+					 ScrollViewer.VerticalScrollBarVisibility="Visible"
+					 ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+				<TextBox.Styles>
+					<Style Selector="ScrollBar">
+						<Setter Property="MinWidth" Value="8" />
+						<Setter Property="Margin" Value="0" />
+					</Style>
+					<Style Selector="ScrollBar:vertical Thumb">
+						<Setter Property="CornerRadius" Value="3" />
+						<Setter Property="Width" Value="6" />
+						<Setter Property="Margin" Value="4" />
+						<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+					</Style>
+					<Style Selector="ScrollBar Thumb:pointerover">
+						<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumHighBrush}" />
+					</Style>
+					<Style Selector="ScrollBar /template/ RepeatButton#PART_LineUpButton, ScrollBar /template/ RepeatButton#PART_LineDownButton">
+						<Setter Property="IsVisible" Value="False" />
+						<Setter Property="Height" Value="0" />
+					</Style>
+					<Style Selector="ScrollBar /template/ Rectangle#TrackRect">
+						<Setter Property="IsVisible" Value="False" />
+					</Style>
+				</TextBox.Styles>
+			</TextBox>
+
+			<!-- ── Разделитель ──────────────────────────────────────── -->
+			<GridSplitter Grid.Column="1"
+						  Width="4"
+						  Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
+						  VerticalAlignment="Stretch"
+						  HorizontalAlignment="Center"/>
+
+			<!-- ── Правая часть: MarkdownViewer с превью ───────────── -->
+			<ScrollViewer Grid.Column="2"
+						  HorizontalScrollBarVisibility="Disabled"
+						  VerticalScrollBarVisibility="Visible"
+						  AllowAutoHide="False">
+				<ScrollViewer.Styles>
+					<Style Selector="ScrollBar">
+						<Setter Property="MinWidth" Value="8" />
+						<Setter Property="Margin" Value="0" />
+					</Style>
+					<Style Selector="ScrollBar:vertical Thumb">
+						<Setter Property="CornerRadius" Value="3" />
+						<Setter Property="Width" Value="6" />
+						<Setter Property="Margin" Value="4" />
+						<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+					</Style>
+					<Style Selector="ScrollBar Thumb:pointerover">
+						<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumHighBrush}" />
+					</Style>
+					<Style Selector="ScrollBar /template/ RepeatButton#PART_LineUpButton, ScrollBar /template/ RepeatButton#PART_LineDownButton">
+						<Setter Property="IsVisible" Value="False" />
+						<Setter Property="Height" Value="0" />
+					</Style>
+					<Style Selector="ScrollBar /template/ Rectangle#TrackRect">
+						<Setter Property="IsVisible" Value="False" />
+					</Style>
+				</ScrollViewer.Styles>
+				<mv:MarkdownViewer Markdown="{Binding Markdown}"
+								   HorizontalAlignment="Stretch"
+								   MaxWidth="{Binding LineWidthMaxWidth}"
+								   Margin="12">
+					<mv:MarkdownViewer.Styles>
+						<Style Selector="ScrollViewer">
+							<Setter Property="VerticalScrollBarVisibility" Value="Hidden"/>
+						</Style>
+						<Style Selector=":is(TextBlock).markdown-paragraph">
+							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+							<Setter Property="FontSize"   Value="{Binding FontSize}"/>
+							<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
+							<Setter Property="ClipToBounds" Value="False"/>
+						</Style>
+						<Style Selector=":is(TextBlock).markdown-list-marker">
+							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+							<Setter Property="FontSize"   Value="{Binding FontSize}"/>
+							<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
+							<Setter Property="ClipToBounds" Value="False"/>
+						</Style>
+						<Style Selector=":is(TextBlock).markdown-h1">
+							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+							<Setter Property="FontSize"   Value="{Binding H1Size}"/>
+							<Setter Property="LineHeight" Value="{Binding H1LineHeight}"/>
+							<Setter Property="ClipToBounds" Value="False"/>
+						</Style>
+						<Style Selector=":is(TextBlock).markdown-h2">
+							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+							<Setter Property="FontSize"   Value="{Binding H2Size}"/>
+							<Setter Property="LineHeight" Value="{Binding H2LineHeight}"/>
+							<Setter Property="ClipToBounds" Value="False"/>
+						</Style>
+						<Style Selector=":is(TextBlock).markdown-h3">
+							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+							<Setter Property="FontSize"   Value="{Binding H3Size}"/>
+							<Setter Property="LineHeight" Value="{Binding H3LineHeight}"/>
+							<Setter Property="ClipToBounds" Value="False"/>
+						</Style>
+						<Style Selector=":is(TextBlock).markdown-h4">
+							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+							<Setter Property="FontSize"   Value="{Binding H4Size}"/>
+							<Setter Property="LineHeight" Value="{Binding H4LineHeight}"/>
+							<Setter Property="ClipToBounds" Value="False"/>
+						</Style>
+						<Style Selector=":is(TextBlock).markdown-h5">
+							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+							<Setter Property="FontSize"   Value="{Binding H5Size}"/>
+							<Setter Property="ClipToBounds" Value="False"/>
+							<Setter Property="LineHeight" Value="{Binding H5LineHeight}"/>
+						</Style>
+						<Style Selector=":is(TextBlock).markdown-h6">
+							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+							<Setter Property="FontSize"   Value="{Binding H6Size}"/>
+							<Setter Property="LineHeight" Value="{Binding H6LineHeight}"/>
+							<Setter Property="ClipToBounds" Value="False"/>
+						</Style>
+					</mv:MarkdownViewer.Styles>
+				</mv:MarkdownViewer>
+			</ScrollViewer>
+		</Grid>
+	</Panel>
 </UserControl>

@@ -84,9 +84,12 @@
 		</StackPanel>
 
 		<!-- Кнопка редактирования -->
-		<Button DockPanel.Dock="Right" Classes="m icon outline" Margin="0 0 8 0">
-			<ic:FluentIcon Icon="Edit" FontSize="16"/>
-		</Button>
+		<ToggleButton DockPanel.Dock="Right"
+					  Classes="m icon outline"
+					  Margin="0 0 8 0"
+					  Command="{Binding ToggleEditModeCommand}">
+			<ic:FluentIcon Icon="{Binding EditIcon}" FontSize="16"/>
+		</ToggleButton>
 
 		<!-- Кнопка настроек чтения -->
 		<ToggleButton x:Name="OptionsButton"
@@ -112,7 +115,9 @@
 		</ToggleButton>
 
 		<!-- Заголовок -->
-		<TextBlock Text="{Binding AppTitle}" VerticalAlignment="Center"/>
+		<TextBlock Text="{Binding AppTitle}"
+				   FontWeight="Medium"
+				   VerticalAlignment="Center"/>
 
 
 		<!-- ══════════════════════════════════════════════════════════════
@@ -148,17 +153,27 @@
 					<Button Classes="Menu l" Command="{Binding OpenFileCommand}">
 						<Grid ColumnDefinitions="* auto">
 							<TextBlock Text="{Binding Texts.OpenFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>
-							<Border Grid.Column="1" Classes="HotkeyBadge" VerticalAlignment="Center">
-								<TextBlock Text="Ctrl + O" FontSize="10"/>
-							</Border>
+							<StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal" Spacing="4">
+								<Border Classes="HotkeyBadge">
+									<TextBlock Text="Ctrl" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
+								</Border>
+								<Border Classes="HotkeyBadge">
+									<TextBlock Text="O" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
+								</Border>
+							</StackPanel>
 						</Grid>
 					</Button>
 					<Button Classes="Menu l">
 						<Grid ColumnDefinitions="* auto">
 							<TextBlock Text="{Binding Texts.CloseFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>
-							<Border Grid.Column="1" Classes="HotkeyBadge" VerticalAlignment="Center">
-								<TextBlock Text="Ctrl + W" FontSize="10"/>
-							</Border>
+							<StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal" Spacing="4">
+								<Border Classes="HotkeyBadge">
+									<TextBlock Text="Ctrl" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
+								</Border>
+								<Border Classes="HotkeyBadge">
+									<TextBlock Text="W" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
+								</Border>
+							</StackPanel>
 						</Grid>
 					</Button>
 

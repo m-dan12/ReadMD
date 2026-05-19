@@ -21,7 +21,7 @@ public static class ServiceCollectionExtensions
 
         // ViewModels
         services.AddTransient<MainWindowViewModel>();
-        services.AddTransient<MainViewModel>();
+        services.AddSingleton<MainViewModel>();
         services.AddTransient<TitleBarViewModel>();
 
         // Views

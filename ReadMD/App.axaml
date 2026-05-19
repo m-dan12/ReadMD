@@ -15,6 +15,7 @@
 			<converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
 			<FontFamily x:Key="LatoFont">avares://ReadMD/Assets/Fonts#Lato</FontFamily>
 			<FontFamily x:Key="LoraFont">avares://ReadMD/Assets/Fonts#Lora</FontFamily>
+			<FontFamily x:Key="FiraFont">avares://ReadMD/Assets/Fonts#Fira Mono</FontFamily>
 			<ResourceDictionary.ThemeDictionaries>
 				<ResourceDictionary x:Key="Default">
 					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 4 0 #28000000</BoxShadows>

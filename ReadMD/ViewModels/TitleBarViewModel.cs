@@ -19,11 +19,13 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     private readonly IFileDialogService _fileDialogService;
     private readonly IMarkdownDocumentService _markdownDocumentService;
     private readonly ILocalizationService _localizationService;
+    private readonly MainViewModel _mainViewModel;
 
     [ObservableProperty] private string _appTitle = "ReadMD";
     [ObservableProperty] private bool _isDarkTheme;
     [ObservableProperty] private int _selectedLanguageIndex;
     [ObservableProperty] private Icon _maximizeIcon = Icon.Maximize;
+    [ObservableProperty] private Icon _editIcon = Icon.Edit;
 
     // Настройки чтения
     [ObservableProperty] private LineWidth _lineWidth;
@@ -39,7 +41,8 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         IWindowService windowService,
         IFileDialogService fileDialogService,
         IMarkdownDocumentService markdownDocumentService,
-        ILocalizationService localization)
+        ILocalizationService localization,
+        MainViewModel mainViewModel)
     {
         _themeService = themeService;
         _readingSettings = readingSettings;
@@ -47,6 +50,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         _fileDialogService = fileDialogService;
         _markdownDocumentService = markdownDocumentService;
         _localizationService = localization;
+        _mainViewModel = mainViewModel;
 
         _isDarkTheme = themeService.CurrentTheme == ThemeVariant.Dark;
         _selectedLanguageIndex = LanguageToIndex(_localizationService.CurrentLanguage);
@@ -113,6 +117,13 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
 
     [RelayCommand]
     private void IncreaseFontSize() { if (FontSize < 32) FontSize++; }
+
+    [RelayCommand]
+    private void ToggleEditMode()
+    {
+        _mainViewModel.IsEditMode = !_mainViewModel.IsEditMode;
+        EditIcon = _mainViewModel.IsEditMode ? Icon.BookOpen : Icon.Edit;
+    }
 
     partial void OnIsDarkThemeChanged(bool value) =>
         _themeService.SetTheme(value ? ThemeVariant.Dark : ThemeVariant.Light);

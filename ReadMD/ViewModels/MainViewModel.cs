@@ -1,9 +1,12 @@
 ﻿using Avalonia;
 using Avalonia.Media;
+using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
 using ExCSS;
 using ReadMD.Services;
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace ReadMD.ViewModels;
 
@@ -11,6 +14,10 @@ public partial class MainViewModel : ViewModelBase
 {
     private readonly IReadingSettingsService _readingSettings;
     private readonly IMarkdownDocumentService _markdownDocumentService;
+    private DispatcherTimer? _autoSaveTimer;
+    
+    // Задержка автосохранения в миллисекундах (2 секунды)
+    private const int AutoSaveDelayMs = 2000;
 
     // ── Ширина строки ────────────────────────────────────────────────
     [ObservableProperty] private double lineWidthWidth = 700;
@@ -18,6 +25,8 @@ public partial class MainViewModel : ViewModelBase
 
     // ── Документ ─────────────────────────────────────────────────────
     [ObservableProperty] private string markdown = "# Заголовок";
+    [ObservableProperty] private string markdownSource = "# Заголовок";
+    [ObservableProperty] private bool isEditMode;
 
     // ── Типографика: пробрасываются в биндинги стилей MarkdownViewer ─
     [ObservableProperty] private FontFamily fontFamily = Application.Current!.Resources["LoraFont"] as FontFamily ?? FontFamily.Default;
@@ -46,6 +55,7 @@ public partial class MainViewModel : ViewModelBase
         _markdownDocumentService = markdownDocumentService;
 
         markdown = markdownDocumentService.Markdown;
+        markdownSource = markdown;
 
         ApplySettings();
 
@@ -98,6 +108,99 @@ public partial class MainViewModel : ViewModelBase
         H5LineHeight = H5Size * ToDouble(_readingSettings.LineSpacing);
         H6LineHeight = H6Size * ToDouble(_readingSettings.LineSpacing);
     }
+
+    partial void OnMarkdownSourceChanged(string value)
+    {
+        // В режиме редактирования обновляем превью в реальном времени
+        if (IsEditMode)
+        {
+            Markdown = value;
+            
+            // Запускаем таймер автосохранения при каждом изменении
+            RestartAutoSaveTimer();
+        }
+    }
+
+    partial void OnIsEditModeChanged(bool value)
+    {
+        if (value)
+        {
+            // Входим в режим редактирования: копируем текущий markdown в редактор
+            MarkdownSource = Markdown;
+        }
+        else
+        {
+            // Выходим из режима редактирования
+            Markdown = MarkdownSource;
+            
+            // Останавливаем таймер автосохранения
+            StopAutoSaveTimer();
+            
+            // Сохраняем в файл сразу при выходе из режима
+            if (_markdownDocumentService.FilePath is not null)
+            {
+                _markdownDocumentService.Markdown = MarkdownSource;
+                SaveFileAsync();
+            }
+        }
+    }
+
+    private async void SaveFileAsync()
+    {
+        try
+        {
+            var filePath = _markdownDocumentService.FilePath;
+            if (filePath is not null)
+            {
+                // Небольшая задержка для завершения всех UI операций
+                await Task.Delay(100);
+                await File.WriteAllTextAsync(filePath, MarkdownSource);
+            }
+        }
+        catch
+        {
+            // Ошибка при сохранении - игнорируем
+        }
+    }
+    
+    /// <summary>
+    /// Перезапускает таймер автосохранения. Срабатывает при каждом изменении текста.
+    /// </summary>
+    private void RestartAutoSaveTimer()
+    {
+        // Останавливаем старый таймер
+        _autoSaveTimer?.Stop();
+        
+        // Создаем новый таймер с задержкой AutoSaveDelayMs
+        _autoSaveTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromMilliseconds(AutoSaveDelayMs)
+        };
+        
+        _autoSaveTimer.Tick += (_, _) =>
+        {
+            StopAutoSaveTimer();
+            
+            // Сохраняем текущие изменения
+            if (_markdownDocumentService.FilePath is not null)
+            {
+                _markdownDocumentService.Markdown = MarkdownSource;
+                SaveFileAsync();
+            }
+        };
+        
+        _autoSaveTimer.Start();
+    }
+    
+    /// <summary>
+    /// Останавливает и очищает таймер автосохранения.
+    /// </summary>
+    private void StopAutoSaveTimer()
+    {
+        _autoSaveTimer?.Stop();
+        _autoSaveTimer = null;
+    }
+    
     private static double ToDouble(LineSpacing spacing) => spacing switch
     {
         LineSpacing.Compact => 1,
