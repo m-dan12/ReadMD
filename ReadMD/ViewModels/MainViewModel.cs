@@ -203,9 +203,9 @@ public partial class MainViewModel : ViewModelBase
     
     private static double ToDouble(LineSpacing spacing) => spacing switch
     {
-        LineSpacing.Compact => 1,
-        LineSpacing.Normal => 1.5,
+        LineSpacing.Compact => 1.2,
+        LineSpacing.Normal => 1.6,
         LineSpacing.Relaxed => 2,
-        _ => 1.5,
+        _ => 1.6,
     };
 }
