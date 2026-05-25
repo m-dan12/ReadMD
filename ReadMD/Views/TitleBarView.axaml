@@ -116,6 +116,7 @@
 
 		<!-- Заголовок -->
 		<TextBlock Text="{Binding AppTitle}"
+				   FontFamily="{StaticResource LatoFont}"
 				   FontWeight="Medium"
 				   VerticalAlignment="Center"/>
 

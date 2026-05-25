@@ -50,18 +50,16 @@
 						<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
 						<Setter Property="ClipToBounds" Value="False"/>
 					</Style>
-					<Style Selector=":is(StackPanel).markdown-list">
-						<Style Selector="^:is(TextBlock)">
-							<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
-							<Setter Property="FontSize"   Value="{Binding FontSize}"/>
-							<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
-							<Setter Property="ClipToBounds" Value="False"/>
-						</Style>
-					</Style>
 					<Style Selector=":is(TextBlock).markdown-h1">
 						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
 						<Setter Property="FontSize"   Value="{Binding H1Size}"/>
 						<Setter Property="LineHeight" Value="{Binding H1LineHeight}"/>
+						<Setter Property="ClipToBounds" Value="False"/>
+					</Style>
+					<Style Selector=":is(TextBlock).markdown-list-marker">
+						<Setter Property="FontFamily" Value="{Binding FontFamily}"/>
+						<Setter Property="FontSize"   Value="{Binding FontSize}"/>
+						<Setter Property="LineHeight" Value="{Binding LineHeight}"/>
 						<Setter Property="ClipToBounds" Value="False"/>
 					</Style>
 					<Style Selector=":is(TextBlock).markdown-h2">
