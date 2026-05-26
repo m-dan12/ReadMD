@@ -205,8 +205,58 @@
         </Setter>
     </Style>
 
+
+
+    <!-- ══════════════════════════════════════════
+         SVG
+    ══════════════════════════════════════════ -->
     <Style Selector="Svg">
         <Setter Property="CurrentColor" Value="{DynamicResource SystemBaseHighColor}"/>
     </Style>
+
+
+
+    <!-- ══════════════════════════════════════════
+         Border
+    ══════════════════════════════════════════ -->
+    <Style Selector="Border">
+			<!--
+			Общий стиль карточки попапа. Применяется к обоим всплывающим меню,
+			чтобы не дублировать Background / Border / BoxShadow.
+			-->
+			<Style Selector="^.PopupCard">
+				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="CornerRadius"    Value="8"/>
+				<Setter Property="MinWidth"        Value="220"/>
+				<Setter Property="Margin"          Value="4"/>
+				<Setter Property="BoxShadow"       Value="{DynamicResource ReadMDPopupBoxShadow}"/>
+			</Style>
+			<Style Selector="^.SegmentValue">
+				<Setter Property="Background" Value="{DynamicResource ReadMDSegmentSelectedBackgroundBrush}"/>
+			</Style>
+			<!--
+			Стиль бейджа с горячей клавишей (Ctrl+O / Ctrl+W).
+			-->
+			<Style Selector="^.HotkeyBadge">
+				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
+				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Padding"         Value="4"/>
+				<Setter Property="CornerRadius"    Value="4"/>
+			</Style>
+			<!--
+			Стиль контейнера группы сегментированных элементов
+			(переключатели шрифта, интервала, ширины строки).
+			-->
+			<Style Selector="^.SegmentContainer">
+				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
+				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+				<Setter Property="BorderThickness" Value="1"/>
+				<Setter Property="Padding"         Value="4"/>
+				<Setter Property="CornerRadius"    Value="8"/>
+			</Style>
+		</Style>
 
 </Styles>

@@ -44,6 +44,6 @@
 			</FluentTheme.Palettes>
 		</FluentTheme>
 		<StyleInclude Source="avares://MarkView.Avalonia/Themes/MarkdownTheme.axaml" />
-		<StyleInclude Source="/Assets/ButtonStyles.axaml" />
+		<StyleInclude Source="/Assets/Styles.axaml" />
 	</Application.Styles>
 </Application>

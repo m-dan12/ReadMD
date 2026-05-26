@@ -23,11 +23,13 @@ public static class ServiceCollectionExtensions
         services.AddTransient<MainWindowViewModel>();
         services.AddSingleton<MainViewModel>();
         services.AddTransient<TitleBarViewModel>();
+        services.AddSingleton<StartViewModel>();
 
         // Views
         services.AddTransient<MainWindow>();
         services.AddTransient<MainView>();
         services.AddTransient<TitleBarView>();
+        services.AddTransient<StartView>();
 
         return services;
     }

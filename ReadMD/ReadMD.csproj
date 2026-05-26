@@ -17,7 +17,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<AvaloniaXaml Remove="Assets\ButtonStyles.axaml" />
+		<AvaloniaXaml Remove="Assets\Styles.axaml" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -39,7 +39,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<AvaloniaResource Update="Assets\ButtonStyles.axaml">
+		<AvaloniaResource Update="Assets\Styles.axaml">
 			<SubType>Designer</SubType>
 		</AvaloniaResource>
 	</ItemGroup>

@@ -13,9 +13,10 @@
         Title="{Binding TitleBarViewModel.Texts.AppName}">
     <Window.KeyBindings>
         <KeyBinding Gesture="Ctrl+O" Command="{Binding TitleBarViewModel.OpenFileCommand}"/>
+        <KeyBinding Gesture="Ctrl+W" Command="{Binding TitleBarViewModel.CloseFileCommand}"/>
     </Window.KeyBindings>
     <DockPanel>
         <view:TitleBarView DataContext="{Binding TitleBarViewModel}" DockPanel.Dock="Top" WindowDecorationProperties.ElementRole="TitleBar"/>
-        <view:MainView DataContext="{Binding MainViewModel}"/>
+        <ContentControl Content="{Binding CurrentView}"/>
     </DockPanel>
 </Window>

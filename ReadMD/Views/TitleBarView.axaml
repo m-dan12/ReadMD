@@ -11,49 +11,6 @@
 			 x:DataType="vm:TitleBarViewModel">
 
 	<UserControl.Styles>
-
-
-
-		<Style Selector="Border">
-			<!--
-			Общий стиль карточки попапа. Применяется к обоим всплывающим меню,
-			чтобы не дублировать Background / Border / BoxShadow.
-			-->
-			<Style Selector="^.PopupCard">
-				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
-				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-				<Setter Property="BorderThickness" Value="1"/>
-				<Setter Property="CornerRadius"    Value="8"/>
-				<Setter Property="MinWidth"        Value="220"/>
-				<Setter Property="Margin"          Value="4"/>
-				<Setter Property="BoxShadow"       Value="{DynamicResource ReadMDPopupBoxShadow}"/>
-			</Style>
-			<Style Selector="^.SegmentValue">
-				<Setter Property="Background" Value="{DynamicResource ReadMDSegmentSelectedBackgroundBrush}"/>
-			</Style>
-			<!--
-			Стиль бейджа с горячей клавишей (Ctrl+O / Ctrl+W).
-			-->
-			<Style Selector="^.HotkeyBadge">
-				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}"/>
-				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-				<Setter Property="BorderThickness" Value="1"/>
-				<Setter Property="Padding"         Value="4"/>
-				<Setter Property="CornerRadius"    Value="4"/>
-			</Style>
-			<!--
-			Стиль контейнера группы сегментированных элементов
-			(переключатели шрифта, интервала, ширины строки).
-			-->
-			<Style Selector="^.SegmentContainer">
-				<Setter Property="Background"      Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"/>
-				<Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
-				<Setter Property="BorderThickness" Value="1"/>
-				<Setter Property="Padding"         Value="4"/>
-				<Setter Property="CornerRadius"    Value="8"/>
-			</Style>
-		</Style>
-
 		<Style Selector="TextBlock.OptionsLabel">
 			<Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
 		</Style>
@@ -164,7 +121,7 @@
 							</StackPanel>
 						</Grid>
 					</Button>
-					<Button Classes="Menu l">
+					<Button Classes="Menu l" Command="{Binding CloseFileCommand}">
 						<Grid ColumnDefinitions="* auto">
 							<TextBlock Text="{Binding Texts.CloseFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>
 							<StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal" Spacing="4">

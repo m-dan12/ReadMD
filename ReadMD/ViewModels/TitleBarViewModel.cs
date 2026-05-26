@@ -20,6 +20,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     private readonly IMarkdownDocumentService _markdownDocumentService;
     private readonly ILocalizationService _localizationService;
     private readonly MainViewModel _mainViewModel;
+    public Action? OnCloseFile { get; set; }
 
     [ObservableProperty] private string _appTitle = "ReadMD";
     [ObservableProperty] private bool _isDarkTheme;
@@ -124,6 +125,9 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         _mainViewModel.IsEditMode = !_mainViewModel.IsEditMode;
         EditIcon = _mainViewModel.IsEditMode ? Icon.BookOpen : Icon.Edit;
     }
+
+    [RelayCommand]
+    private void CloseFile() => OnCloseFile?.Invoke();
 
     partial void OnIsDarkThemeChanged(bool value) =>
         _themeService.SetTheme(value ? ThemeVariant.Dark : ThemeVariant.Light);
