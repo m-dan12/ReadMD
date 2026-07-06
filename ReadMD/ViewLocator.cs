@@ -6,6 +6,10 @@ using System;
 
 namespace ReadMD;
 
+/// <summary>
+/// Определяет шаблон для сопоставления ViewModel с View по соглашению имен.
+/// Использует сервис-провайдер для создания View из DI-контейнера.
+/// </summary>
 public class ViewLocator : IDataTemplate
 {
     public Control? Build(object? data)

@@ -17,18 +17,19 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     private readonly IReadingSettingsService _readingSettings;
     private readonly IWindowService _windowService;
     private readonly IFileDialogService _fileDialogService;
-    private readonly IMarkdownDocumentService _markdownDocumentService;
+    private readonly IDocumentService _documentService;
     private readonly ILocalizationService _localizationService;
     private readonly MainViewModel _mainViewModel;
+    private string _currentFileName = string.Empty;
+
     public Action? OnCloseFile { get; set; }
 
-    [ObservableProperty] private string _appTitle = "ReadMD";
+    [ObservableProperty] private string _appTitle = string.Empty;
     [ObservableProperty] private bool _isDarkTheme;
     [ObservableProperty] private int _selectedLanguageIndex;
     [ObservableProperty] private Icon _maximizeIcon = Icon.Maximize;
     [ObservableProperty] private Icon _editIcon = Icon.Edit;
 
-    // Настройки чтения
     [ObservableProperty] private LineWidth _lineWidth;
     [ObservableProperty] private bool _useSerifs;
     [ObservableProperty] private int _fontSize;
@@ -41,7 +42,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         IReadingSettingsService readingSettings,
         IWindowService windowService,
         IFileDialogService fileDialogService,
-        IMarkdownDocumentService markdownDocumentService,
+        IDocumentService documentService,
         ILocalizationService localization,
         MainViewModel mainViewModel)
     {
@@ -49,21 +50,35 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         _readingSettings = readingSettings;
         _windowService = windowService;
         _fileDialogService = fileDialogService;
-        _markdownDocumentService = markdownDocumentService;
+        _documentService = documentService;
         _localizationService = localization;
         _mainViewModel = mainViewModel;
 
         _isDarkTheme = themeService.CurrentTheme == ThemeVariant.Dark;
         _selectedLanguageIndex = LanguageToIndex(_localizationService.CurrentLanguage);
-        AppTitle = _localizationService.Strings.FileNamePlaceholder;
 
         SyncFromService();
+        UpdateAppTitle();
+
         _readingSettings.SettingsChanged += SyncFromService;
         _localizationService.LanguageChanged += OnLanguageChanged;
+        _documentService.FilePathChanged += OnDocumentPathChanged;
     }
 
-    private void OnLanguageChanged(object? sender, EventArgs e) =>
+    private void OnLanguageChanged(object? sender, EventArgs e)
+    {
         OnPropertyChanged(nameof(Texts));
+        UpdateAppTitle();
+    }
+
+    private void OnDocumentPathChanged(object? sender, EventArgs e)
+    {
+        _currentFileName = _documentService.FilePath is not null
+            ? Path.GetFileName(_documentService.FilePath)
+            : string.Empty;
+
+        UpdateAppTitle();
+    }
 
     private void SyncFromService()
     {
@@ -71,11 +86,13 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         UseSerifs = _readingSettings.UseSerifs;
         FontSize = _readingSettings.FontSize;
         LineSpacing = _readingSettings.LineSpacing;
+    }
 
-        OnPropertyChanged(nameof(LineWidth));
-        OnPropertyChanged(nameof(UseSerifs));
-        OnPropertyChanged(nameof(FontSize));
-        OnPropertyChanged(nameof(LineSpacing));
+    private void UpdateAppTitle()
+    {
+        AppTitle = string.IsNullOrEmpty(_currentFileName)
+            ? Texts.FileNamePlaceholder
+            : _currentFileName;
     }
 
     partial void OnLineWidthChanged(LineWidth value) => _readingSettings.LineWidth = value;
@@ -90,9 +107,9 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     private void Minimize() => _windowService.Minimize();
 
     [RelayCommand]
-    private void Maximize()
+    private void ToggleMaximize()
     {
-        _windowService.Maximize();
+        _windowService.ToggleMaximize();
         MaximizeIcon = _windowService.GetWindowState() == WindowState.Maximized
             ? Icon.SquareMultiple
             : Icon.Maximize;
@@ -105,12 +122,10 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     private async Task OpenFileAsync()
     {
         var path = await _fileDialogService.ShowOpenMarkdownFileDialogAsync();
-        if (path is null) return;
+        if (path is null)
+            return;
 
-        _markdownDocumentService.FilePath = path;
-        _markdownDocumentService.Markdown = await File.ReadAllTextAsync(path);
-
-        AppTitle = Path.GetFileName(path);
+        await _documentService.LoadAsync(path);
     }
 
     [RelayCommand]
@@ -136,6 +151,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     {
         _readingSettings.SettingsChanged -= SyncFromService;
         _localizationService.LanguageChanged -= OnLanguageChanged;
+        _documentService.FilePathChanged -= OnDocumentPathChanged;
     }
 
     private static int LanguageToIndex(AppLanguage language) => language switch

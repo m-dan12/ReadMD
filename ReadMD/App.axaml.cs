@@ -12,8 +12,15 @@ using System.Diagnostics;
 
 namespace ReadMD;
 
+/// <summary>
+/// Основной класс приложения Avalonia.
+/// Настраивает контейнер зависимостей, Markdown-парсер и главное окно.
+/// </summary>
 public partial class App : Application
 {
+    /// <summary>
+    /// Глобальный сервис-провайдер, используемый для разрешения Views и ViewModels.
+    /// </summary>
     public static IServiceProvider Services { get; private set; } = null!;
 
     public override void Initialize() => AvaloniaXamlLoader.Load(this);
@@ -22,14 +29,16 @@ public partial class App : Application
     {
         Services = new ServiceCollection().ConfigureServices().BuildServiceProvider();
 
+        // Настраиваем поведение MarkdownViewer для обработки ссылок и синтаксического подсветки.
         MarkdownViewer.LinkClickedEvent.AddClassHandler<MarkdownViewer>((_, e) =>
             Process.Start(new ProcessStartInfo(e.Url) { UseShellExecute = true }));
+
         MarkdownViewerDefaults.Pipeline = new MarkdownPipelineBuilder()
             .UseSupportedExtensions()
             .UseAlertBlocks()
             .Build();
-        MarkdownViewerDefaults.Extensions.AddTextMateHighlighting();
 
+        MarkdownViewerDefaults.Extensions.AddTextMateHighlighting();
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

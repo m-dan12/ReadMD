@@ -1,15 +1,20 @@
-п»їusing Avalonia;
+using Avalonia;
 using System;
 
 namespace ReadMD;
 
+/// <summary>
+/// Точка входа приложения.
+/// </summary>
 internal sealed class Program
 {
     [STAThread]
     public static void Main(string[] args) => BuildAvaloniaApp()
         .StartWithClassicDesktopLifetime(args);
 
-    // Avalonia configuration, don't remove; also used by visual designer.
+    /// <summary>
+    /// Конфигурирует Avalonia и возвращает построитель приложения.
+    /// </summary>
     public static AppBuilder BuildAvaloniaApp() =>
         AppBuilder.Configure<App>()
             .UsePlatformDetect()
@@ -18,5 +23,4 @@ internal sealed class Program
 #endif
             .WithInterFont()
             .LogToTrace();
-
 }

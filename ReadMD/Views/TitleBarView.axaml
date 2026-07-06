@@ -32,7 +32,7 @@
 			<Button Command="{Binding MinimizeCommand}" Classes="start m icon outline system">
 				<ic:FluentIcon Icon="Subtract" FontSize="16"/>
 			</Button>
-			<Button Command="{Binding MaximizeCommand}" Classes="gap m icon outline system">
+			<Button Command="{Binding ToggleMaximizeCommand}" Classes="gap m icon outline system">
 				<ic:FluentIcon Icon="{Binding MaximizeIcon}" FontSize="16"/>
 			</Button>
 			<Button Command="{Binding CloseCommand}"   Classes="end close m icon outline system">

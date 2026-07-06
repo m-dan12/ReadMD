@@ -1,11 +1,12 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using ReadMD.Services;
+using System;
 
 namespace ReadMD.ViewModels;
 
 public partial class MainWindowViewModel : ViewModelBase
 {
-    private readonly IMarkdownDocumentService _markdownDocumentService;
+    private readonly IDocumentService _documentService;
 
     [ObservableProperty] private TitleBarViewModel titleBarViewModel;
     [ObservableProperty] private ViewModelBase currentView;
@@ -17,33 +18,32 @@ public partial class MainWindowViewModel : ViewModelBase
         TitleBarViewModel titleBarViewModel,
         MainViewModel mainViewModel,
         StartViewModel startViewModel,
-        IMarkdownDocumentService markdownDocumentService)
+        IDocumentService documentService)
     {
         TitleBarViewModel = titleBarViewModel;
         TitleBarViewModel.OnCloseFile = CloseFile;
         _mainViewModel = mainViewModel;
         _startViewModel = startViewModel;
-        _markdownDocumentService = markdownDocumentService;
+        _documentService = documentService;
 
-        // Начинаем со стартового экрана
-        currentView = startViewModel;
+        currentView = _startViewModel;
+        _documentService.FilePathChanged += OnDocumentStateChanged;
 
-        // Переключаемся на MainView когда загружен файл
-        _markdownDocumentService.MarkdownChanged += OnMarkdownChanged;
+        UpdateView();
     }
 
-    private void OnMarkdownChanged()
+    private void OnDocumentStateChanged(object? sender, EventArgs e) => UpdateView();
+
+    private void UpdateView()
     {
-        CurrentView = string.IsNullOrEmpty(_markdownDocumentService.FilePath)
+        CurrentView = _documentService.FilePath is null
             ? _startViewModel
             : _mainViewModel;
     }
 
-    // Вызывается из TitleBarViewModel при закрытии файла
     public void CloseFile()
     {
-        _markdownDocumentService.FilePath = null;
-        _markdownDocumentService.Markdown = string.Empty;
+        _documentService.Close();
         CurrentView = _startViewModel;
     }
 }

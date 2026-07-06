@@ -1,39 +1,29 @@
-﻿using Avalonia;
+using Avalonia;
 using Avalonia.Media;
 using Avalonia.Threading;
 using CommunityToolkit.Mvvm.ComponentModel;
-using ExCSS;
 using ReadMD.Services;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace ReadMD.ViewModels;
 
-public partial class MainViewModel : ViewModelBase
+public partial class MainViewModel : ViewModelBase, IDisposable
 {
     private readonly IReadingSettingsService _readingSettings;
-    private readonly IMarkdownDocumentService _markdownDocumentService;
+    private readonly IDocumentService _documentService;
     private DispatcherTimer? _autoSaveTimer;
-    
-    // Задержка автосохранения в миллисекундах (2 секунды)
+
     private const int AutoSaveDelayMs = 2000;
 
-    // ── Ширина строки ────────────────────────────────────────────────
-    [ObservableProperty] private double lineWidthWidth = 700;
-    [ObservableProperty] private double lineWidthMaxWidth = 850;
-
-    // ── Документ ─────────────────────────────────────────────────────
-    [ObservableProperty] private string markdown = "# Заголовок";
-    [ObservableProperty] private string markdownSource = "# Заголовок";
+    [ObservableProperty] private double contentWidth = 700;
+    [ObservableProperty] private double contentMaxWidth = 850;
+    [ObservableProperty] private string markdown = "# ���������";
+    [ObservableProperty] private string markdownSource = "# ���������";
     [ObservableProperty] private bool isEditMode;
-
-    // ── Типографика: пробрасываются в биндинги стилей MarkdownViewer ─
     [ObservableProperty] private FontFamily fontFamily = Application.Current!.Resources["LoraFont"] as FontFamily ?? FontFamily.Default;
     [ObservableProperty] private double fontSize = 16;
-    [ObservableProperty] private double lineHeight = 24;  // fontSize * lineSpacing
-
-    // Размеры заголовков — масштабируются от базового fontSize
+    [ObservableProperty] private double lineHeight = 24;
     [ObservableProperty] private double h1Size;
     [ObservableProperty] private double h1LineHeight;
     [ObservableProperty] private double h2Size;
@@ -49,18 +39,28 @@ public partial class MainViewModel : ViewModelBase
 
     public MainViewModel(
         IReadingSettingsService readingSettings,
-        IMarkdownDocumentService markdownDocumentService)
+        IDocumentService documentService)
     {
         _readingSettings = readingSettings;
-        _markdownDocumentService = markdownDocumentService;
+        _documentService = documentService;
 
-        markdown = markdownDocumentService.Markdown;
+        markdown = _documentService.Content;
         markdownSource = markdown;
 
         ApplySettings();
 
         _readingSettings.SettingsChanged += ApplySettings;
-        _markdownDocumentService.MarkdownChanged += () => Markdown = _markdownDocumentService.Markdown;
+        _documentService.DocumentChanged += OnDocumentChanged;
+    }
+
+    private void OnDocumentChanged(object? sender, EventArgs e)
+    {
+        Markdown = _documentService.Content;
+
+        if (!IsEditMode)
+        {
+            MarkdownSource = Markdown;
+        }
     }
 
     private void ApplySettings()
@@ -69,38 +69,30 @@ public partial class MainViewModel : ViewModelBase
         UpdateTypography();
     }
 
-    private void UpdateWidths(LineWidth width)
+    private void UpdateWidths(LineWidth width) => (ContentWidth, ContentMaxWidth) = width switch
     {
-        (LineWidthWidth, LineWidthMaxWidth) = width switch
-        {
-            LineWidth.Narrow => (500, 600),
-            LineWidth.Medium => (700, 850),
-            LineWidth.Wide => (900, 1100),
-            _ => (700, 850),
-        };
-    }
+        LineWidth.Narrow => (500, 600),
+        LineWidth.Medium => (700, 850),
+        LineWidth.Wide => (900, 1100),
+        _ => (700, 850),
+    };
 
     private void UpdateTypography()
     {
-        // Шрифт    
         FontFamily = Application.Current!.Resources[
             _readingSettings.UseSerifs ? "LoraFont" : "LatoFont"
         ] as FontFamily ?? FontFamily.Default;
 
-        // Базовый размер и межстрочный интервал
-        var size = (double)_readingSettings.FontSize;
-        var spacing = _readingSettings.LineSpacing;
+        FontSize = _readingSettings.FontSize;
+        LineHeight = FontSize * ToDouble(_readingSettings.LineSpacing);
 
-        FontSize = size;
-        LineHeight = size * ToDouble(_readingSettings.LineSpacing);
+        H1Size = Math.Round(FontSize * 2.0);
+        H2Size = Math.Round(FontSize * 1.6);
+        H3Size = Math.Round(FontSize * 1.4);
+        H4Size = Math.Round(FontSize * 1.2);
+        H5Size = Math.Round(FontSize * 1.1);
+        H6Size = FontSize;
 
-        // Заголовки масштабируются относительно базового размера
-        H1Size = Math.Round(size * 2.0);
-        H2Size = Math.Round(size * 1.6);
-        H3Size = Math.Round(size * 1.4);
-        H4Size = Math.Round(size * 1.2);
-        H5Size = Math.Round(size * 1.1);
-        H6Size = size;
         H1LineHeight = H1Size * ToDouble(_readingSettings.LineSpacing);
         H2LineHeight = H2Size * ToDouble(_readingSettings.LineSpacing);
         H3LineHeight = H3Size * ToDouble(_readingSettings.LineSpacing);
@@ -111,12 +103,9 @@ public partial class MainViewModel : ViewModelBase
 
     partial void OnMarkdownSourceChanged(string value)
     {
-        // В режиме редактирования обновляем превью в реальном времени
         if (IsEditMode)
         {
             Markdown = value;
-            
-            // Запускаем таймер автосохранения при каждом изменении
             RestartAutoSaveTimer();
         }
     }
@@ -125,82 +114,61 @@ public partial class MainViewModel : ViewModelBase
     {
         if (value)
         {
-            // Входим в режим редактирования: копируем текущий markdown в редактор
             MarkdownSource = Markdown;
+            return;
         }
-        else
+
+        Markdown = MarkdownSource;
+        StopAutoSaveTimer();
+
+        if (_documentService.IsLoaded)
         {
-            // Выходим из режима редактирования
-            Markdown = MarkdownSource;
-            
-            // Останавливаем таймер автосохранения
-            StopAutoSaveTimer();
-            
-            // Сохраняем в файл сразу при выходе из режима
-            if (_markdownDocumentService.FilePath is not null)
-            {
-                _markdownDocumentService.Markdown = MarkdownSource;
-                SaveFileAsync();
-            }
+            _documentService.Content = MarkdownSource;
+            _ = SaveFileAsync();
         }
     }
 
-    private async void SaveFileAsync()
+    private async Task SaveFileAsync()
     {
         try
         {
-            var filePath = _markdownDocumentService.FilePath;
-            if (filePath is not null)
-            {
-                // Небольшая задержка для завершения всех UI операций
-                await Task.Delay(100);
-                await File.WriteAllTextAsync(filePath, MarkdownSource);
-            }
+            await _documentService.SaveAsync();
         }
         catch
         {
-            // Ошибка при сохранении - игнорируем
+            // Игнорируем ошибки сохранения, чтобы UI не ломался.
         }
     }
-    
-    /// <summary>
-    /// Перезапускает таймер автосохранения. Срабатывает при каждом изменении текста.
-    /// </summary>
+
     private void RestartAutoSaveTimer()
     {
-        // Останавливаем старый таймер
         _autoSaveTimer?.Stop();
-        
-        // Создаем новый таймер с задержкой AutoSaveDelayMs
+
         _autoSaveTimer = new DispatcherTimer
         {
             Interval = TimeSpan.FromMilliseconds(AutoSaveDelayMs)
         };
-        
-        _autoSaveTimer.Tick += (_, _) =>
+
+        _autoSaveTimer.Tick += async (_, _) =>
         {
             StopAutoSaveTimer();
-            
-            // Сохраняем текущие изменения
-            if (_markdownDocumentService.FilePath is not null)
+
+            if (_documentService.IsLoaded)
             {
-                _markdownDocumentService.Markdown = MarkdownSource;
-                SaveFileAsync();
+                _documentService.Content = MarkdownSource;
+                await _documentService.SaveAsync();
             }
         };
-        
+
         _autoSaveTimer.Start();
     }
-    
-    /// <summary>
-    /// Останавливает и очищает таймер автосохранения.
-    /// </summary>
+
     private void StopAutoSaveTimer()
     {
         _autoSaveTimer?.Stop();
         _autoSaveTimer = null;
     }
-    
+
     private static double ToDouble(LineSpacing spacing) => spacing switch
     {
         LineSpacing.Compact => 1.2,
@@ -208,4 +176,11 @@ public partial class MainViewModel : ViewModelBase
         LineSpacing.Relaxed => 2,
         _ => 1.6,
     };
+
+    public void Dispose()
+    {
+        _readingSettings.SettingsChanged -= ApplySettings;
+        _documentService.DocumentChanged -= OnDocumentChanged;
+        _autoSaveTimer?.Stop();
+    }
 }
