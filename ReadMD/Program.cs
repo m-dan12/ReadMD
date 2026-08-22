@@ -1,19 +1,25 @@
 using Avalonia;
 using System;
+using Velopack;
 
 namespace ReadMD;
 
 /// <summary>
-/// Точка входа приложения.
+/// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
 /// </summary>
 internal sealed class Program
 {
     [STAThread]
-    public static void Main(string[] args) => BuildAvaloniaApp()
-        .StartWithClassicDesktopLifetime(args);
+    public static void Main(string[] args)
+    {
+        VelopackApp.Build().Run();
+
+        BuildAvaloniaApp()
+            .StartWithClassicDesktopLifetime(args);
+    }
 
     /// <summary>
-    /// Конфигурирует Avalonia и возвращает построитель приложения.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Avalonia пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
     /// </summary>
     public static AppBuilder BuildAvaloniaApp() =>
         AppBuilder.Configure<App>()
