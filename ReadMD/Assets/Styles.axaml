@@ -81,6 +81,11 @@
             <Setter Property="CornerRadius"    Value="4"/>
         </Style>
 
+        <!-- Иконка темы меняет цвет в зависимости от текущей темы -->
+        <Style Selector="^.theme ic|FluentIcon">
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+        </Style>
+
         <!-- Сегментированный переключатель (используется в попапе настроек) -->
         <Style Selector="^.check:checked /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="{DynamicResource ReadMDSegmentSelectedBackgroundBrush}"/>

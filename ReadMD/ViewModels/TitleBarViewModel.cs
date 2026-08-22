@@ -1,4 +1,6 @@
-﻿using Avalonia.Controls;
+﻿using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Platform;
 using Avalonia.Styling;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -54,15 +56,32 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         _localizationService = localization;
         _mainViewModel = mainViewModel;
 
-        _isDarkTheme = themeService.CurrentTheme == ThemeVariant.Dark;
+        SyncThemeFromService();
         _selectedLanguageIndex = LanguageToIndex(_localizationService.CurrentLanguage);
 
         SyncFromService();
         UpdateAppTitle();
 
+        _themeService.ThemeChanged += OnThemeChanged;
         _readingSettings.SettingsChanged += SyncFromService;
         _localizationService.LanguageChanged += OnLanguageChanged;
         _documentService.FilePathChanged += OnDocumentPathChanged;
+    }
+
+    private void OnThemeChanged() => SyncThemeFromService();
+
+    private void SyncThemeFromService()
+    {
+        // Пишем в backing field напрямую, а не в сгенерированное свойство,
+        // чтобы не срабатывал OnIsDarkThemeChanged и не вызывался SetTheme повторно
+        var isDark = _themeService.CurrentTheme == ThemeVariant.Dark ||
+                     (_themeService.CurrentTheme == ThemeVariant.Default &&
+                      Application.Current?.PlatformSettings?.GetColorValues().ThemeVariant == PlatformThemeVariant.Dark);
+
+#pragma warning disable MVVMTK0034
+        _isDarkTheme = isDark;
+#pragma warning restore MVVMTK0034
+        OnPropertyChanged(nameof(IsDarkTheme));
     }
 
     private void OnLanguageChanged(object? sender, EventArgs e)
