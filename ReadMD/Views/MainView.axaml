@@ -77,7 +77,6 @@
 				<Style Selector="ScrollBar:vertical Thumb">
 					<Setter Property="CornerRadius" Value="3" />
 					<Setter Property="Width" Value="6" />
-					<Setter Property="Margin" Value="4" />
 					<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
 				</Style>
 				<Style Selector="ScrollBar Thumb:pointerover">
@@ -146,7 +145,6 @@
 					<Style Selector="ScrollBar:vertical Thumb">
 						<Setter Property="CornerRadius" Value="3" />
 						<Setter Property="Width" Value="6" />
-						<Setter Property="Margin" Value="4" />
 						<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
 					</Style>
 					<Style Selector="ScrollBar Thumb:pointerover">
@@ -182,7 +180,6 @@
 					<Style Selector="ScrollBar:vertical Thumb">
 						<Setter Property="CornerRadius" Value="3" />
 						<Setter Property="Width" Value="6" />
-						<Setter Property="Margin" Value="4" />
 						<Setter Property="Background" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
 					</Style>
 					<Style Selector="ScrollBar Thumb:pointerover">
