@@ -13,13 +13,13 @@ using System.Diagnostics;
 namespace ReadMD;
 
 /// <summary>
-/// Основной класс приложения Avalonia.
-/// Настраивает контейнер зависимостей, Markdown-парсер и главное окно.
+/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Avalonia.
+/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, Markdown-пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ.
 /// </summary>
 public partial class App : Application
 {
     /// <summary>
-    /// Глобальный сервис-провайдер, используемый для разрешения Views и ViewModels.
+    /// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ-пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ Views пїЅ ViewModels.
     /// </summary>
     public static IServiceProvider Services { get; private set; } = null!;
 
@@ -29,7 +29,7 @@ public partial class App : Application
     {
         Services = new ServiceCollection().ConfigureServices().BuildServiceProvider();
 
-        // Настраиваем поведение MarkdownViewer для обработки ссылок и синтаксического подсветки.
+        // пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ MarkdownViewer пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
         MarkdownViewer.LinkClickedEvent.AddClassHandler<MarkdownViewer>((_, e) =>
             Process.Start(new ProcessStartInfo(e.Url) { UseShellExecute = true }));
 
@@ -47,6 +47,17 @@ public partial class App : Application
             Services.GetRequiredService<IWindowService>().Initialize(window);
             Services.GetRequiredService<IFileDialogService>().Initialize(window);
             desktop.MainWindow = window;
+
+            // РћС‚РєСЂС‹С‚СЊ С„Р°Р№Р», РµСЃР»Рё РїСѓС‚СЊ РїРµСЂРµРґР°РЅ С‡РµСЂРµР· РєРѕРјР°РЅРґРЅСѓСЋ СЃС‚СЂРѕРєСѓ
+            if (desktop.Args?.Length > 0)
+            {
+                var filePath = desktop.Args[0];
+                if (System.IO.File.Exists(filePath))
+                {
+                    var documentService = Services.GetRequiredService<IDocumentService>();
+                    _ = documentService.LoadAsync(filePath);
+                }
+            }
         }
 
         base.OnFrameworkInitializationCompleted();
