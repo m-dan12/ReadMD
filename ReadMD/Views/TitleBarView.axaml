@@ -207,7 +207,7 @@
 						<Border Grid.Column="1" Classes="SegmentContainer">
 							<StackPanel Orientation="Horizontal" Spacing="4">
 								<Button Classes="check m icon" Command="{Binding DecreaseFontSizeCommand}">
-									<Svg Path="/Assets/Icons/icon-minus.svg"/>
+									<Svg Path="/Assets/icons/icon-minus.svg"/>
 								</Button>
 								<Border Classes="SegmentValue" Height="36" Width="36" CornerRadius="4">
 									<TextBlock Text="{Binding FontSize}"
@@ -216,7 +216,7 @@
 											   HorizontalAlignment="Center"/>
 								</Border>
 								<Button Classes="check m icon" Command="{Binding IncreaseFontSizeCommand}">
-									<Svg Path="/Assets/Icons/icon-plus.svg"/>
+									<Svg Path="/Assets/icons/icon-plus.svg"/>
 								</Button>
 							</StackPanel>
 						</Border>
@@ -232,21 +232,21 @@
 											 IsChecked="{Binding LineSpacing,
 											 Converter={StaticResource EnumToBoolConverter},
 											 ConverterParameter=Compact, Mode=TwoWay}">
-									<Svg Path="/Assets/Icons/icon-interval-s.svg"/>
+									<Svg Path="/Assets/icons/icon-interval-s.svg"/>
 								</RadioButton>
 								<RadioButton Classes="Toggle"
 											 GroupName="LineSpacingGroup"
 											 IsChecked="{Binding LineSpacing,
 											 Converter={StaticResource EnumToBoolConverter},
 											 ConverterParameter=Normal, Mode=TwoWay}">
-									<Svg Path="/Assets/Icons/icon-interval-m.svg"/>
+									<Svg Path="/Assets/icons/icon-interval-m.svg"/>
 								</RadioButton>
 								<RadioButton Classes="Toggle"
 											 GroupName="LineSpacingGroup"
 											 IsChecked="{Binding LineSpacing,
 											 Converter={StaticResource EnumToBoolConverter},
 											 ConverterParameter=Relaxed, Mode=TwoWay}">
-									<Svg Path="/Assets/Icons/icon-interval-l.svg"/>
+									<Svg Path="/Assets/icons/icon-interval-l.svg"/>
 								</RadioButton>
 							</StackPanel>
 						</Border>
@@ -262,21 +262,21 @@
 											 IsChecked="{Binding LineWidth,
 											 Converter={StaticResource EnumToBoolConverter},
 											 ConverterParameter=Narrow, Mode=TwoWay}">
-									<Svg Path="/Assets/Icons/icon-line-width-s.svg"/>
+									<Svg Path="/Assets/icons/icon-line-width-s.svg"/>
 								</RadioButton>
 								<RadioButton Classes="Toggle"
 											 GroupName="LineWidthGroup"
 											 IsChecked="{Binding LineWidth,
 											 Converter={StaticResource EnumToBoolConverter},
 											 ConverterParameter=Medium, Mode=TwoWay}">
-									<Svg Path="/Assets/Icons/icon-line-width-m.svg"/>
+									<Svg Path="/Assets/icons/icon-line-width-m.svg"/>
 								</RadioButton>
 								<RadioButton Classes="Toggle"
 											 GroupName="LineWidthGroup"
 											 IsChecked="{Binding LineWidth,
 											 Converter={StaticResource EnumToBoolConverter},
 											 ConverterParameter=Wide, Mode=TwoWay}">
-									<Svg Path="/Assets/Icons/icon-line-width-l.svg"/>
+									<Svg Path="/Assets/icons/icon-line-width-l.svg"/>
 								</RadioButton>
 							</StackPanel>
 						</Border>
