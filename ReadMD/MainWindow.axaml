@@ -9,7 +9,7 @@
         WindowDecorations="BorderOnly"
         x:Class="ReadMD.MainWindow"
         x:DataType="vm:MainWindowViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/ReadMD-icon.ico"
         Title="{Binding TitleBarViewModel.Texts.AppName}">
     <Window.KeyBindings>
         <KeyBinding Gesture="Ctrl+O" Command="{Binding TitleBarViewModel.OpenFileCommand}"/>
