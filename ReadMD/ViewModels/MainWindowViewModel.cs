@@ -18,7 +18,10 @@ public partial class MainWindowViewModel : ViewModelBase
         TitleBarViewModel titleBarViewModel,
         MainViewModel mainViewModel,
         StartViewModel startViewModel,
-        IDocumentService documentService)
+        IDocumentService documentService,
+        IThemeService themeService,
+        ILocalizationService localizationService,
+        IReadingSettingsService readingSettingsService)
     {
         TitleBarViewModel = titleBarViewModel;
         TitleBarViewModel.OnCloseFile = CloseFile;
@@ -30,6 +33,26 @@ public partial class MainWindowViewModel : ViewModelBase
         _documentService.FilePathChanged += OnDocumentStateChanged;
 
         UpdateView();
+
+        // Загружаем сохраненные настройки при запуске
+        _ = LoadSettingsAsync(themeService, localizationService, readingSettingsService);
+    }
+
+    private async System.Threading.Tasks.Task LoadSettingsAsync(
+        IThemeService themeService,
+        ILocalizationService localizationService,
+        IReadingSettingsService readingSettingsService)
+    {
+        try
+        {
+            await themeService.LoadThemeAsync();
+            await localizationService.LoadLanguageAsync();
+            await readingSettingsService.LoadSettingsAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to load settings: {ex.Message}");
+        }
     }
 
     private void OnDocumentStateChanged(object? sender, EventArgs e) => UpdateView();

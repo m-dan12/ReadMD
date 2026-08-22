@@ -20,9 +20,15 @@ public interface IDocumentService
 
 public class DocumentService : IDocumentService, IDisposable
 {
+    private readonly IErrorHandlingService _errorHandlingService;
     private string _content = string.Empty;
     private string? _filePath;
     private FileSystemWatcher? _watcher;
+
+    public DocumentService(IErrorHandlingService errorHandlingService)
+    {
+        _errorHandlingService = errorHandlingService;
+    }
 
     public string Content
     {
@@ -53,22 +59,66 @@ public class DocumentService : IDocumentService, IDisposable
 
     public async Task LoadAsync(string path)
     {
-        if (string.IsNullOrWhiteSpace(path))
-            throw new ArgumentException("���� � ����� �� ����� ���� ������.", nameof(path));
+        try
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                throw new ArgumentException("Путь к файлу не может быть пустым.", nameof(path));
 
-        var text = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+            if (!File.Exists(path))
+                throw new FileNotFoundException("Файл не найден.", path);
 
-        FilePath = path;
-        Content = text;
-        SetupWatcher(path);
+            var text = await File.ReadAllTextAsync(path).ConfigureAwait(false);
+
+            FilePath = path;
+            Content = text;
+            SetupWatcher(path);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _errorHandlingService.ShowError("Ошибка доступа", $"Недостаточно прав для открытия файла: {ex.Message}");
+            throw;
+        }
+        catch (FileNotFoundException ex)
+        {
+            _errorHandlingService.ShowError("Файл не найден", $"Файл не существует: {ex.FileName}");
+            throw;
+        }
+        catch (IOException ex)
+        {
+            _errorHandlingService.ShowError("Ошибка чтения", $"Не удалось прочитать файл: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _errorHandlingService.ShowError("Неизвестная ошибка", $"Не удалось открыть файл: {ex.Message}");
+            throw;
+        }
     }
 
     public async Task SaveAsync()
     {
-        if (FilePath is null)
-            return;
+        try
+        {
+            if (FilePath is null)
+                return;
 
-        await File.WriteAllTextAsync(FilePath, Content).ConfigureAwait(false);
+            await File.WriteAllTextAsync(FilePath, Content).ConfigureAwait(false);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            _errorHandlingService.ShowError("Ошибка доступа", $"Недостаточно прав для сохранения файла: {ex.Message}");
+            throw;
+        }
+        catch (IOException ex)
+        {
+            _errorHandlingService.ShowError("Ошибка записи", $"Не удалось сохранить файл: {ex.Message}");
+            throw;
+        }
+        catch (Exception ex)
+        {
+            _errorHandlingService.ShowError("Неизвестная ошибка", $"Не удалось сохранить файл: {ex.Message}");
+            throw;
+        }
     }
 
     public void Close()
@@ -100,9 +150,15 @@ public class DocumentService : IDocumentService, IDisposable
                 var text = await File.ReadAllTextAsync(path).ConfigureAwait(false);
                 await Dispatcher.UIThread.InvokeAsync(() => Content = text);
             }
-            catch
+            catch (IOException ex)
             {
-                // ���� �������� ������������ ��� ������ ������ ���������.
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                    _errorHandlingService.ShowWarning("Предупреждение", $"Файл изменён внешне, но не удалось перезагрузить: {ex.Message}"));
+            }
+            catch (Exception ex)
+            {
+                await Dispatcher.UIThread.InvokeAsync(() =>
+                    _errorHandlingService.ShowWarning("Предупреждение", $"Ошибка при отслеживании изменений: {ex.Message}"));
             }
         };
 

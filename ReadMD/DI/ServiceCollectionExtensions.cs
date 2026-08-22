@@ -6,13 +6,15 @@ using ReadMD.Views;
 namespace ReadMD.DI;
 
 /// <summary>
-/// Расширение для конфигурации служб приложения.
-/// Здесь регистрируются все сервисы, ViewModel и Views.
+/// пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.
+/// пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ, ViewModel пїЅ Views.
 /// </summary>
 public static class ServiceCollectionExtensions
 {
     public static IServiceCollection ConfigureServices(this IServiceCollection services)
     {
+        services.AddSingleton<SettingsStorageService>();
+        services.AddSingleton<IErrorHandlingService, ErrorHandlingService>();
         services.AddSingleton<IThemeService, ThemeService>();
         services.AddSingleton<ILocalizationService, LocalizationService>();
         services.AddSingleton<IReadingSettingsService, ReadingSettingsService>();

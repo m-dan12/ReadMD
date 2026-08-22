@@ -134,9 +134,10 @@ public partial class MainViewModel : ViewModelBase, IDisposable
         {
             await _documentService.SaveAsync();
         }
-        catch
+        catch (Exception)
         {
-            // Игнорируем ошибки сохранения, чтобы UI не ломался.
+            // Ошибка уже обработана в DocumentService.SaveAsync
+            // UI продолжает работать
         }
     }
 
