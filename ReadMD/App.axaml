@@ -21,16 +21,33 @@
 					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 4 0 #28000000</BoxShadows>
 					<SolidColorBrush x:Key="ReadMDSegmentSelectedBackgroundBrush" Color="#FFFFFFFF"/>
 					<SolidColorBrush x:Key="ReadMDSegmentSelectedForegroundBrush" Color="#FF000000"/>
+					<!-- Checked состояние кнопок: темный фон, белая иконка -->
+					<SolidColorBrush x:Key="ButtonCheckedBackground" Color="#18191b"/>
+					<SolidColorBrush x:Key="ButtonCheckedForeground" Color="#f6f6f7"/>
+					<!-- Лого для начального экрана -->
+					<SolidColorBrush x:Key="ReadMDLogo">avares://ReadMD/Assets/ReadMD-logo-dark.svg</SolidColorBrush>
 				</ResourceDictionary>
 				<ResourceDictionary x:Key="Light">
 					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 4 0 #28000000</BoxShadows>
 					<SolidColorBrush x:Key="ReadMDSegmentSelectedBackgroundBrush" Color="#FFFFFFFF"/>
 					<SolidColorBrush x:Key="ReadMDSegmentSelectedForegroundBrush" Color="#FF000000"/>
+					<!-- Checked состояние кнопок: темный фон, белая иконка -->
+					<SolidColorBrush x:Key="ButtonCheckedBackground" Color="#18191b"/>
+					<SolidColorBrush x:Key="ButtonCheckedForeground" Color="#f6f6f7"/>
+					<!-- Лого для начального экрана -->
+					<StreamGeometry x:Key="ReadMDLogo">avares://ReadMD/Assets/ReadMD-logo-dark.svg</StreamGeometry>
 				</ResourceDictionary>
 				<ResourceDictionary x:Key="Dark">
 					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 12 0 #80000000</BoxShadows>
-					<SolidColorBrush x:Key="ReadMDSegmentSelectedBackgroundBrush" Color="#FF3B3B3B"/>
+					<SolidColorBrush x:Key="ReadMDSegmentSelectedBackgroundBrush" Color="#FF1e1e1e"/>
 					<SolidColorBrush x:Key="ReadMDSegmentSelectedForegroundBrush" Color="#FFFFFFFF"/>
+					<!-- Checked состояние кнопок: светлый фон, черная иконка -->
+					<SolidColorBrush x:Key="ButtonCheckedBackground" Color="#edeeef"/>
+					<SolidColorBrush x:Key="ButtonCheckedForeground" Color="#000000"/>
+					<!-- Фон попапа: такой же как основной фон приложения -->
+					<SolidColorBrush x:Key="SystemControlBackgroundAltHighBrush" Color="#18191b"/>
+					<!-- Лого для начального экрана -->
+					<StreamGeometry x:Key="ReadMDLogo">avares://ReadMD/Assets/ReadMD-logo-light.svg</StreamGeometry>
 				</ResourceDictionary>
 			</ResourceDictionary.ThemeDictionaries>
 		</ResourceDictionary>
@@ -39,8 +56,14 @@
 	<Application.Styles>
 		<FluentTheme>
 			<FluentTheme.Palettes>
-				<ColorPaletteResources x:Key="Light" Accent="Black" />
-				<ColorPaletteResources x:Key="Dark" Accent="White" />
+				<ColorPaletteResources x:Key="Light"
+					Accent="#18191b"
+					RegionColor="#f6f6f7"
+					ErrorText="#d32f2f" />
+				<ColorPaletteResources x:Key="Dark"
+					Accent="#c9cbcf"
+					RegionColor="#18191b"
+					ErrorText="#ef5350" />
 			</FluentTheme.Palettes>
 		</FluentTheme>
 		<StyleInclude Source="avares://MarkView.Avalonia/Themes/MarkdownTheme.axaml" />

@@ -10,6 +10,7 @@ public interface IDocumentService
     string Content { get; set; }
     string? FilePath { get; }
     bool IsLoaded { get; }
+    bool IsLoading { get; }
     event EventHandler? DocumentChanged;
     event EventHandler? FilePathChanged;
 
@@ -24,6 +25,7 @@ public class DocumentService : IDocumentService, IDisposable
     private string _content = string.Empty;
     private string? _filePath;
     private FileSystemWatcher? _watcher;
+    private bool _isLoading;
 
     public DocumentService(IErrorHandlingService errorHandlingService)
     {
@@ -53,6 +55,7 @@ public class DocumentService : IDocumentService, IDisposable
     }
 
     public bool IsLoaded => FilePath is not null;
+    public bool IsLoading => _isLoading;
 
     public event EventHandler? DocumentChanged;
     public event EventHandler? FilePathChanged;
@@ -61,6 +64,8 @@ public class DocumentService : IDocumentService, IDisposable
     {
         try
         {
+            _isLoading = true;
+
             if (string.IsNullOrWhiteSpace(path))
                 throw new ArgumentException("Путь к файлу не может быть пустым.", nameof(path));
 
@@ -92,6 +97,10 @@ public class DocumentService : IDocumentService, IDisposable
         {
             _errorHandlingService.ShowError("Неизвестная ошибка", $"Не удалось открыть файл: {ex.Message}");
             throw;
+        }
+        finally
+        {
+            _isLoading = false;
         }
     }
 

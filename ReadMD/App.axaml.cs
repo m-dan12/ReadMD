@@ -1,6 +1,7 @@
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Threading;
 using Markdig;
 using MarkView.Avalonia;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,7 +30,7 @@ public partial class App : Application
     {
         Services = new ServiceCollection().ConfigureServices().BuildServiceProvider();
 
-        // ����������� ��������� MarkdownViewer ��� ��������� ������ � ��������������� ���������.
+        // Регистрируем обработчик MarkdownViewer для открытия ссылок в стандартном браузере.
         MarkdownViewer.LinkClickedEvent.AddClassHandler<MarkdownViewer>((_, e) =>
             Process.Start(new ProcessStartInfo(e.Url) { UseShellExecute = true }));
 
@@ -43,10 +44,30 @@ public partial class App : Application
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var window = Services.GetRequiredService<MainWindow>();
-            window.DataContext = Services.GetRequiredService<MainWindowViewModel>();
             Services.GetRequiredService<IWindowService>().Initialize(window);
             Services.GetRequiredService<IFileDialogService>().Initialize(window);
-            desktop.MainWindow = window;
+
+            var documentService = Services.GetRequiredService<IDocumentService>();
+            var singleInstanceService = Services.GetRequiredService<ISingleInstanceService>();
+            var trayIconService = Services.GetRequiredService<ITrayIconService>();
+
+            // Инициализируем трей
+            trayIconService.Initialize(window, documentService);
+
+            // Слушаем IPC сообщения от других экземпляров
+            singleInstanceService.StartListening(filePath =>
+            {
+                System.Diagnostics.Debug.WriteLine($"[App] IPC callback invoked with file: {filePath}");
+                Dispatcher.UIThread.Post(() =>
+                {
+                    System.Diagnostics.Debug.WriteLine($"[App] Loading file in UI thread: {filePath}");
+                    // Показываем окно и загружаем файл
+                    window.Show();
+                    window.WindowState = Avalonia.Controls.WindowState.Normal;
+                    window.Activate();
+                    _ = documentService.LoadAsync(filePath);
+                });
+            });
 
             // Открыть файл, если путь передан через командную строку
             if (desktop.Args?.Length > 0)
@@ -54,10 +75,20 @@ public partial class App : Application
                 var filePath = desktop.Args[0];
                 if (System.IO.File.Exists(filePath))
                 {
-                    var documentService = Services.GetRequiredService<IDocumentService>();
+                    // Загружаем файл асинхронно (не блокируем UI)
                     _ = documentService.LoadAsync(filePath);
                 }
             }
+
+            var viewModel = Services.GetRequiredService<MainWindowViewModel>();
+            window.DataContext = viewModel;
+            desktop.MainWindow = window;
+
+            // Обработчик закрытия приложения
+            desktop.ShutdownRequested += (_, _) =>
+            {
+                singleInstanceService.Release();
+            };
         }
 
         base.OnFrameworkInitializationCompleted();

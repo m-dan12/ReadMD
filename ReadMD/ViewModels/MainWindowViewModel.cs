@@ -29,10 +29,12 @@ public partial class MainWindowViewModel : ViewModelBase
         _startViewModel = startViewModel;
         _documentService = documentService;
 
-        currentView = _startViewModel;
-        _documentService.FilePathChanged += OnDocumentStateChanged;
+        // Если файл уже загружается/загружен, показываем MainView сразу
+        currentView = _documentService.IsLoaded || _documentService.IsLoading
+            ? _mainViewModel
+            : _startViewModel;
 
-        UpdateView();
+        _documentService.FilePathChanged += OnDocumentStateChanged;
 
         // Загружаем сохраненные настройки при запуске
         _ = LoadSettingsAsync(themeService, localizationService, readingSettingsService);

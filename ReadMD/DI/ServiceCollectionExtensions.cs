@@ -21,6 +21,8 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IWindowService, WindowService>();
         services.AddSingleton<IFileDialogService, FileDialogService>();
         services.AddSingleton<IDocumentService, DocumentService>();
+        services.AddSingleton<ISingleInstanceService, SingleInstanceService>();
+        services.AddSingleton<ITrayIconService, TrayIconService>();
 
         services.AddTransient<MainWindowViewModel>();
         services.AddSingleton<MainViewModel>();
