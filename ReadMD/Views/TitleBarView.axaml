@@ -180,7 +180,7 @@
 						</ToggleButton>
 					</Grid>
 
-					<Separator Margin="0" Opacity="0.3"/>
+					<Separator Margin="0" Opacity="0.3" Background="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
 
 					<!-- Шрифт: с засечками / без -->
 					<Grid ColumnDefinitions="* auto" Margin="16 0">

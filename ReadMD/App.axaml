@@ -14,6 +14,7 @@
 		<ResourceDictionary>
 			<converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
 			<converters:BoolToStringConverter x:Key="BoolToStringConverter"/>
+			<converters:ThemeVariantConverter x:Key="ThemeVariantConverter"/>
 			<FontFamily x:Key="LatoFont">avares://ReadMD/Assets/Fonts#Lato</FontFamily>
 			<FontFamily x:Key="LoraFont">avares://ReadMD/Assets/Fonts#Lora</FontFamily>
 			<FontFamily x:Key="FiraFont">avares://ReadMD/Assets/Fonts#Fira Mono</FontFamily>
@@ -26,7 +27,7 @@
 					<SolidColorBrush x:Key="ButtonCheckedBackground" Color="#18191b"/>
 					<SolidColorBrush x:Key="ButtonCheckedForeground" Color="#f6f6f7"/>
 					<!-- Лого для начального экрана -->
-					<SolidColorBrush x:Key="ReadMDLogo">avares://ReadMD/Assets/ReadMD-logo-dark.svg</SolidColorBrush>
+					<StreamGeometry x:Key="ReadMDLogo">avares://ReadMD/Assets/ReadMD-logo-dark.svg</StreamGeometry>
 				</ResourceDictionary>
 				<ResourceDictionary x:Key="Light">
 					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 4 0 #28000000</BoxShadows>
@@ -42,9 +43,9 @@
 					<BoxShadows x:Key="ReadMDPopupBoxShadow">0 0 12 0 #80000000</BoxShadows>
 					<SolidColorBrush x:Key="ReadMDSegmentSelectedBackgroundBrush" Color="#FF1e1e1e"/>
 					<SolidColorBrush x:Key="ReadMDSegmentSelectedForegroundBrush" Color="#FFFFFFFF"/>
-					<!-- Checked состояние кнопок: светлый фон, черная иконка -->
-					<SolidColorBrush x:Key="ButtonCheckedBackground" Color="#edeeef"/>
-					<SolidColorBrush x:Key="ButtonCheckedForeground" Color="#000000"/>
+					<!-- Checked состояние кнопок: акцентный цвет, белая иконка -->
+					<SolidColorBrush x:Key="ButtonCheckedBackground" Color="#464749"/>
+					<SolidColorBrush x:Key="ButtonCheckedForeground" Color="#FFFFFF"/>
 					<!-- Фон попапа: такой же как основной фон приложения -->
 					<SolidColorBrush x:Key="SystemControlBackgroundAltHighBrush" Color="#18191b"/>
 					<!-- Лого для начального экрана -->
@@ -62,8 +63,9 @@
 					RegionColor="#f6f6f7"
 					ErrorText="#d32f2f" />
 				<ColorPaletteResources x:Key="Dark"
-					Accent="#c9cbcf"
+					Accent="#464749"
 					RegionColor="#18191b"
+					ChromeMediumLow="#383A3F"
 					ErrorText="#ef5350" />
 			</FluentTheme.Palettes>
 		</FluentTheme>
