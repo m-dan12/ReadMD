@@ -4,7 +4,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:vm="clr-namespace:ReadMD.ViewModels"
         xmlns:view="clr-namespace:ReadMD.Views" FontFamily="{StaticResource LatoFont}"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450" MinWidth="292" MinHeight="146"
         ExtendClientAreaToDecorationsHint="True"
         WindowDecorations="BorderOnly"
         x:Class="ReadMD.MainWindow"

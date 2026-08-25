@@ -40,20 +40,21 @@
 			</Button>
 		</StackPanel>
 
-		<!-- Кнопка редактирования -->
-		<ToggleButton DockPanel.Dock="Right"
-					  Classes="m icon outline"
-					  Margin="0 0 8 0"
-					  Command="{Binding ToggleEditModeCommand}">
-			<ic:FluentIcon Icon="{Binding EditIcon}" FontSize="16"/>
-		</ToggleButton>
-
 		<!-- Кнопка настроек чтения -->
 		<ToggleButton x:Name="OptionsButton"
 					  DockPanel.Dock="Right"
 					  Classes="m icon outline"
 					  Margin="0 0 8 0">
 			<ic:FluentIcon Icon="Options" FontSize="16"/>
+		</ToggleButton>
+
+		<!-- Кнопка редактирования -->
+		<ToggleButton DockPanel.Dock="Right"
+					  Classes="m icon theme outline"
+					  Margin="0 0 8 0"
+					  Command="{Binding ToggleEditModeCommand}"
+					  IsVisible="{Binding IsFileOpen}">
+			<ic:FluentIcon Icon="{Binding EditIcon}" FontSize="16"/>
 		</ToggleButton>
 
 		<!-- Переключатель темы -->

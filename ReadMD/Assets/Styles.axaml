@@ -41,6 +41,21 @@
             <Setter Property="Cursor"     Value="Hand"/>
         </Style>
 
+        <!-- Checked состояние: подсветка фона -->
+        <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonCheckedBackground}"/>
+        </Style>
+
+        <!-- Цвет иконки в нажатом состоянии: инвертируется -->
+        <Style Selector="^:checked ic|FluentIcon">
+            <Setter Property="Foreground" Value="{DynamicResource ButtonCheckedForeground}"/>
+        </Style>
+
+        <Style Selector="^:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource ButtonCheckedBackground}"/>
+            <Setter Property="Opacity" Value="0.8"/>
+        </Style>
+
         <!-- Размеры -->
         <Style Selector="^.s">
             <Setter Property="Height" Value="28"/>
@@ -71,14 +86,31 @@
                 <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
                 <Setter Property="BorderThickness" Value="1"/>
             </Style>
+
+            <!-- Checked состояние для outline кнопок -->
+            <Style Selector="^:checked /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="{DynamicResource ButtonCheckedBackground}"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+
+            <!-- Цвет иконки в нажатом состоянии для outline кнопок -->
+            <Style Selector="^:checked ic|FluentIcon">
+                <Setter Property="Foreground" Value="{DynamicResource ButtonCheckedForeground}"/>
+            </Style>
         </Style>
 
-        <!-- Переключатель темы: checked-состояние выглядит как outline-кнопка -->
+        <!-- Переключатель темы: не меняет фон при checked -->
         <Style Selector="^.theme:checked /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background"      Value="Transparent"/>
             <Setter Property="BorderBrush"     Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="CornerRadius"    Value="4"/>
+        </Style>
+
+        <Style Selector="^.theme:checked:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
+            <Setter Property="Opacity" Value="1"/>
         </Style>
 
         <!-- Иконка темы меняет цвет в зависимости от текущей темы -->

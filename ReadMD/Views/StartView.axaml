@@ -3,11 +3,17 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:ReadMD.ViewModels"
+             xmlns:svg="using:Avalonia.Svg.Skia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="ReadMD.Views.StartView"
              x:DataType="vm:StartViewModel">
     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="16">
-        <TextBlock Text="ReadMD" FontSize="32" FontWeight="Bold" HorizontalAlignment="Center"/>
+        <Panel Height="80" HorizontalAlignment="Center">
+            <svg:Svg Path="/Assets/ReadMD-logo-dark.svg" Height="80"
+                     IsVisible="{Binding IsDarkTheme, Converter={x:Static BoolConverters.Not}}"/>
+            <svg:Svg Path="/Assets/ReadMD-logo-light.svg" Height="80"
+                     IsVisible="{Binding IsDarkTheme}"/>
+        </Panel>
         <Button Classes="Menu l" Command="{Binding OpenFileCommand}">
 			<Grid ColumnDefinitions="* auto">
 				<TextBlock Text="{Binding Texts.OpenFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>

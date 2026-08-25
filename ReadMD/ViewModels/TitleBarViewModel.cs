@@ -31,6 +31,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     [ObservableProperty] private int _selectedLanguageIndex;
     [ObservableProperty] private Icon _maximizeIcon = Icon.Maximize;
     [ObservableProperty] private Icon _editIcon = Icon.Edit;
+    [ObservableProperty] private bool _isFileOpen;
 
     [ObservableProperty] private LineWidth _lineWidth;
     [ObservableProperty] private bool _useSerifs;
@@ -60,6 +61,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
         _selectedLanguageIndex = LanguageToIndex(_localizationService.CurrentLanguage);
 
         SyncFromService();
+        IsFileOpen = _documentService.IsLoaded;
         UpdateAppTitle();
 
         _themeService.ThemeChanged += OnThemeChanged;
@@ -96,6 +98,7 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
             ? Path.GetFileName(_documentService.FilePath)
             : string.Empty;
 
+        IsFileOpen = _documentService.IsLoaded;
         UpdateAppTitle();
     }
 
@@ -161,7 +164,12 @@ public partial class TitleBarViewModel : ViewModelBase, IDisposable
     }
 
     [RelayCommand]
-    private void CloseFile() => OnCloseFile?.Invoke();
+    private void CloseFile()
+    {
+        _mainViewModel.IsEditMode = false;
+        EditIcon = Icon.Edit;
+        OnCloseFile?.Invoke();
+    }
 
     partial void OnIsDarkThemeChanged(bool value) =>
         _themeService.SetTheme(value ? ThemeVariant.Dark : ThemeVariant.Light);
