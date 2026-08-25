@@ -23,16 +23,19 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IDocumentService, DocumentService>();
         services.AddSingleton<ISingleInstanceService, SingleInstanceService>();
         services.AddSingleton<ITrayIconService, TrayIconService>();
+        services.AddSingleton<IUpdateService, UpdateService>();
 
         services.AddTransient<MainWindowViewModel>();
         services.AddSingleton<MainViewModel>();
         services.AddTransient<TitleBarViewModel>();
         services.AddSingleton<StartViewModel>();
+        services.AddSingleton<UpdateNotificationViewModel>();
 
         services.AddTransient<MainWindow>();
         services.AddTransient<MainView>();
         services.AddTransient<TitleBarView>();
         services.AddTransient<StartView>();
+        services.AddTransient<UpdateNotificationView>();
 
         return services;
     }

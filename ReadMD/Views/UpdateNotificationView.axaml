@@ -1,0 +1,127 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:ReadMD.ViewModels"
+             xmlns:ic="using:FluentIcons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="120"
+             x:Class="ReadMD.Views.UpdateNotificationView"
+             x:DataType="vm:UpdateNotificationViewModel">
+
+    <UserControl.Styles>
+        <!-- Анимация появления снизу -->
+        <Style Selector="Border.popup">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:0.3"/>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.3">
+                        <TransformOperationsTransition.Easing>
+                            <CubicEaseOut/>
+                        </TransformOperationsTransition.Easing>
+                    </TransformOperationsTransition>
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Border.popup[IsVisible=False]">
+            <Setter Property="Opacity" Value="0"/>
+            <Setter Property="RenderTransform" Value="translateY(20px)"/>
+        </Style>
+
+        <Style Selector="Border.popup[IsVisible=True]">
+            <Setter Property="Opacity" Value="1"/>
+            <Setter Property="RenderTransform" Value="translateY(0px)"/>
+        </Style>
+    </UserControl.Styles>
+
+    <Border Classes="popup"
+            IsVisible="{Binding IsVisible}"
+            Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+            BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+            BorderThickness="1"
+            CornerRadius="8"
+            Padding="16"
+            MaxWidth="380"
+            BoxShadow="0 4 16 2 #40000000">
+
+        <Grid RowDefinitions="Auto,Auto,Auto">
+            <!-- Заголовок -->
+            <Grid Grid.Row="0" ColumnDefinitions="Auto,*,Auto" Margin="0,0,0,12">
+                <ic:FluentIcon Grid.Column="0"
+                              Icon="ArrowDownload"
+                              FontSize="20"
+                              Foreground="{DynamicResource SystemAccentColor}"
+                              VerticalAlignment="Center"
+                              Margin="0,0,8,0"/>
+
+                <TextBlock Grid.Column="1"
+                          Text="Доступно обновление"
+                          FontWeight="SemiBold"
+                          FontSize="14"
+                          VerticalAlignment="Center"/>
+
+                <Button Grid.Column="2"
+                       Command="{Binding DismissCommand}"
+                       Background="Transparent"
+                       BorderThickness="0"
+                       Padding="4"
+                       VerticalAlignment="Center"
+                       IsEnabled="{Binding !IsInstalling}">
+                    <ic:FluentIcon Icon="Dismiss" FontSize="16"/>
+                </Button>
+            </Grid>
+
+            <!-- Сообщение -->
+            <TextBlock Grid.Row="1"
+                      Margin="0,0,0,12"
+                      TextWrapping="Wrap"
+                      FontSize="13"
+                      Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}">
+                <Run Text="Новая версия"/>
+                <Run Text="{Binding NewVersion}" FontWeight="SemiBold"/>
+                <Run Text="готова к установке."/>
+            </TextBlock>
+
+            <!-- Кнопки -->
+            <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="8">
+                <Button Command="{Binding InstallUpdateCommand}"
+                       IsEnabled="{Binding !IsInstalling}"
+                       Background="{DynamicResource SystemAccentColor}"
+                       Foreground="White"
+                       Padding="12,6"
+                       CornerRadius="4">
+                    <StackPanel Orientation="Horizontal" Spacing="6">
+                        <ic:FluentIcon Icon="ArrowDownload" FontSize="16" IsVisible="{Binding !IsInstalling}"/>
+                        <ic:FluentIcon Icon="ArrowSync" FontSize="16" IsVisible="{Binding IsInstalling}">
+                            <ic:FluentIcon.Styles>
+                                <Style Selector="ic|FluentIcon[IsVisible=True]">
+                                    <Setter Property="RenderTransform" Value="rotate(0deg)"/>
+                                    <Style.Animations>
+                                        <Animation Duration="0:0:1" IterationCount="Infinite">
+                                            <KeyFrame Cue="100%">
+                                                <Setter Property="RenderTransform" Value="rotate(360deg)"/>
+                                            </KeyFrame>
+                                        </Animation>
+                                    </Style.Animations>
+                                </Style>
+                            </ic:FluentIcon.Styles>
+                        </ic:FluentIcon>
+                        <TextBlock Text="{Binding IsInstalling, Converter={StaticResource BoolToStringConverter}, ConverterParameter='Установка...|Установить'}"
+                                  FontSize="13"
+                                  VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Command="{Binding DismissCommand}"
+                       IsEnabled="{Binding !IsInstalling}"
+                       Background="Transparent"
+                       BorderBrush="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"
+                       BorderThickness="1"
+                       Padding="12,6"
+                       CornerRadius="4">
+                    <TextBlock Text="Позже" FontSize="13"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</UserControl>

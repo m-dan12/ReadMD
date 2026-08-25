@@ -15,8 +15,18 @@
         <KeyBinding Gesture="Ctrl+O" Command="{Binding TitleBarViewModel.OpenFileCommand}"/>
         <KeyBinding Gesture="Ctrl+W" Command="{Binding TitleBarViewModel.CloseFileCommand}"/>
     </Window.KeyBindings>
-    <DockPanel>
-        <view:TitleBarView DataContext="{Binding TitleBarViewModel}" DockPanel.Dock="Top" WindowDecorationProperties.ElementRole="TitleBar"/>
-        <ContentControl Content="{Binding CurrentView}"/>
-    </DockPanel>
+    <Grid>
+        <!-- Основной контент -->
+        <DockPanel>
+            <view:TitleBarView DataContext="{Binding TitleBarViewModel}" DockPanel.Dock="Top" WindowDecorationProperties.ElementRole="TitleBar"/>
+            <ContentControl Content="{Binding CurrentView}"/>
+        </DockPanel>
+
+        <!-- Popup уведомления об обновлении (слева снизу) -->
+        <view:UpdateNotificationView DataContext="{Binding UpdateNotificationViewModel}"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Bottom"
+                                     Margin="16,0,0,16"
+                                     ZIndex="1000"/>
+    </Grid>
 </Window>
