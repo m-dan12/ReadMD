@@ -23,7 +23,18 @@ public partial class MainWindow : Window
         {
             // Отменяем закрытие и скрываем окно в трей
             e.Cancel = true;
-            Hide();
+
+            // Сначала закрываем файл и возвращаемся на начальную страницу
+            if (DataContext is ViewModels.MainWindowViewModel mainWindowViewModel)
+            {
+                mainWindowViewModel.CloseFile();
+            }
+
+            // Даем UI время обновиться, затем скрываем окно
+            Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+            {
+                Hide();
+            }, Avalonia.Threading.DispatcherPriority.Background);
         }
         base.OnClosing(e);
     }

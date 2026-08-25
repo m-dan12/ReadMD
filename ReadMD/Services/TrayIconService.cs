@@ -44,15 +44,6 @@ public class TrayIconService : ITrayIconService
         _trayIcon.Menu = menu;
 
         _trayIcon.Clicked += (_, _) => ShowMainWindow();
-
-        // Подписываемся на событие скрытия окна
-        _mainWindow.PropertyChanged += (_, e) =>
-        {
-            if (e.Property.Name == nameof(Window.IsVisible) && !_mainWindow.IsVisible)
-            {
-                OnWindowHidden();
-            }
-        };
     }
 
     public void Show()
@@ -65,13 +56,6 @@ public class TrayIconService : ITrayIconService
     {
         if (_trayIcon != null)
             _trayIcon.IsVisible = false;
-    }
-
-    private void OnWindowHidden()
-    {
-        // Выгружаем файл из памяти при сворачивании в трей
-        _documentService?.Close();
-        System.Diagnostics.Debug.WriteLine("[TrayIcon] Window hidden, document unloaded from memory");
     }
 
     private void ShowMainWindow()

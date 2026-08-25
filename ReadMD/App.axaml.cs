@@ -61,7 +61,9 @@ public partial class App : Application
                 Dispatcher.UIThread.Post(() =>
                 {
                     System.Diagnostics.Debug.WriteLine($"[App] Loading file in UI thread: {filePath}");
+
                     // Показываем окно и загружаем файл
+                    // LoadAsync сам заменит старый файл, если он был загружен
                     window.Show();
                     window.WindowState = Avalonia.Controls.WindowState.Normal;
                     window.Activate();
