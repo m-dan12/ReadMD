@@ -6,9 +6,9 @@
 		<ApplicationManifest>app.manifest</ApplicationManifest>
 		<AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
 		<ApplicationIcon>Assets\ReadMD-icon.ico</ApplicationIcon>
-		<Version>1.0.3</Version>
-		<AssemblyVersion>1.0.3.0</AssemblyVersion>
-		<FileVersion>1.0.3.0</FileVersion>
+		<Version>1.0.4</Version>
+		<AssemblyVersion>1.0.4.0</AssemblyVersion>
+		<FileVersion>1.0.4.0</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -27,6 +27,7 @@
 	<ItemGroup>
 		<PackageReference Include="Avalonia" Version="12.0.3" />
 		<PackageReference Include="Avalonia.Desktop" Version="12.0.3" />
+		<PackageReference Include="Avalonia.Labs.Controls" Version="12.0.0" />
 		<PackageReference Include="Avalonia.Themes.Fluent" Version="12.0.3" />
 		<PackageReference Include="Avalonia.Fonts.Inter" Version="12.0.3" />
 		<PackageReference Include="AvaloniaUI.DiagnosticsSupport" Version="2.2.1">

@@ -70,29 +70,57 @@
                          IsVisible="{Binding IsDarkTheme}"/>
             </Panel>
 
-            <!-- Кнопка открыть файл -->
-            <Button Classes="Menu l" Command="{Binding OpenFileCommand}" HorizontalAlignment="Stretch">
-                <Grid ColumnDefinitions="* auto">
-                    <TextBlock Text="{Binding Texts.OpenFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>
-                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal" Spacing="4">
-                        <Border Classes="HotkeyBadge">
-                            <TextBlock Text="Ctrl" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
-                        </Border>
-                        <Border Classes="HotkeyBadge">
-                            <TextBlock Text="O" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
-                        </Border>
-                    </StackPanel>
-                </Grid>
-            </Button>
+            <!-- Кнопка открыть файл с Drag & Drop -->
+            <Border Classes="OpenFileDropZone"
+                    Width="776"
+                    Height="80"
+                    Margin="12"
+                    Background="Transparent"
+                    BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                    BorderThickness="1"
+                    CornerRadius="8"
+                    Name="DropZoneBorder">
+                <Border.Transitions>
+                    <Transitions>
+                        <BrushTransition Property="BorderBrush" Duration="0:0:0.15"/>
+                    </Transitions>
+                </Border.Transitions>
+                <Button Command="{Binding OpenFileCommand}"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        Background="Transparent"
+                        BorderThickness="0"
+                        Padding="16"
+                        CornerRadius="8"
+                        Name="OpenFileButton"
+                        IsHitTestVisible="False">
+                    <Grid ColumnDefinitions="* auto">
+                        <TextBlock Text="{Binding Texts.OpenFile}"
+                                    Margin="0 0 28 0"
+                                    VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1"
+                                    VerticalAlignment="Center"
+                                    Orientation="Horizontal"
+                                    Spacing="4">
+                            <Border Classes="HotkeyBadge">
+                                <TextBlock Text="Ctrl" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
+                            </Border>
+                            <Border Classes="HotkeyBadge">
+                                <TextBlock Text="O" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
+                            </Border>
+                        </StackPanel>
+                    </Grid>
+                </Button>
+            </Border>
 
             <!-- Недавние файлы -->
-            <StackPanel Spacing="16" IsVisible="{Binding RecentFiles.Count}">
+            <StackPanel Spacing="16" IsVisible="{Binding RecentFiles.Count}" Margin="12,0,0,0" ClipToBounds="False">
                 <TextBlock Text="{Binding Texts.RecentFiles}" Classes="SectionTitle"/>
 
-                <ItemsControl ItemsSource="{Binding RecentFiles}">
+                <ItemsControl ItemsSource="{Binding RecentFiles}" ClipToBounds="False">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <WrapPanel Orientation="Horizontal"/>
+                            <WrapPanel Orientation="Horizontal" ClipToBounds="False"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
 
@@ -107,7 +135,8 @@
                                     Background="Transparent"
                                     BorderThickness="0"
                                     HorizontalAlignment="Stretch"
-                                    HorizontalContentAlignment="Stretch">
+                                    HorizontalContentAlignment="Stretch"
+                                    ClipToBounds="False">
                                 <Border Classes="RecentFileCard">
                                     <StackPanel Spacing="8">
                                         <Grid ColumnDefinitions="* Auto">
