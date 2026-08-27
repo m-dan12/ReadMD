@@ -22,14 +22,18 @@ public interface IDocumentService
 public class DocumentService : IDocumentService, IDisposable
 {
     private readonly IErrorHandlingService _errorHandlingService;
+    private readonly IRecentFilesService? _recentFilesService;
     private string _content = string.Empty;
     private string? _filePath;
     private FileSystemWatcher? _watcher;
     private bool _isLoading;
 
-    public DocumentService(IErrorHandlingService errorHandlingService)
+    public DocumentService(
+        IErrorHandlingService errorHandlingService,
+        IRecentFilesService? recentFilesService = null)
     {
         _errorHandlingService = errorHandlingService;
+        _recentFilesService = recentFilesService;
     }
 
     public string Content
@@ -77,6 +81,12 @@ public class DocumentService : IDocumentService, IDisposable
             FilePath = path;
             Content = text;
             SetupWatcher(path);
+
+            // Добавляем файл в список недавних
+            if (_recentFilesService is not null)
+            {
+                _ = _recentFilesService.AddRecentFileAsync(path);
+            }
         }
         catch (UnauthorizedAccessException ex)
         {

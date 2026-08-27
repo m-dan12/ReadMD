@@ -223,6 +223,18 @@
         <Style Selector="^.close:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#30FF0000"/>
         </Style>
+
+        <!-- Кнопка без стилизации (для карточек) -->
+        <Style Selector="^.unstyled">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CornerRadius" Value="0"/>
+            <Style Selector="^:pointerover /template/ ContentPresenter#PART_ContentPresenter">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+        </Style>
     </Style>
 
     <!-- ══════════════════════════════════════════

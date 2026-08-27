@@ -14,5 +14,7 @@
   "FontSansSerif": "Без засечек",
   "FontSize": "Размер шрифта",
   "LineSpacing": "Интервал",
-  "LineWidth": "Ширина строки"
+  "LineWidth": "Ширина строки",
+  "RecentFiles": "Недавние файлы",
+  "NoRecentFiles": "Нет недавно открытых файлов"
 }

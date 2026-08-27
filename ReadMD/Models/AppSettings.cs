@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace ReadMD.Models;
 
 public class AppSettings
@@ -8,4 +10,5 @@ public class AppSettings
     public string LineWidth { get; set; } = "Medium";
     public string Theme { get; set; } = "Default";
     public string Language { get; set; } = "Russian";
+    public List<RecentFile> RecentFiles { get; set; } = [];
 }

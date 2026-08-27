@@ -4,28 +4,127 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:ReadMD.ViewModels"
              xmlns:svg="using:Avalonia.Svg.Skia"
+             xmlns:ic="using:FluentIcons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
              x:Class="ReadMD.Views.StartView"
              x:DataType="vm:StartViewModel">
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="16">
-        <Panel Height="80" HorizontalAlignment="Center">
-            <svg:Svg Path="/Assets/ReadMD-logo-dark.svg" Height="80"
-                     IsVisible="{Binding IsDarkTheme, Converter={x:Static BoolConverters.Not}}"/>
-            <svg:Svg Path="/Assets/ReadMD-logo-light.svg" Height="80"
-                     IsVisible="{Binding IsDarkTheme}"/>
-        </Panel>
-        <Button Classes="Menu l" Command="{Binding OpenFileCommand}">
-			<Grid ColumnDefinitions="* auto">
-				<TextBlock Text="{Binding Texts.OpenFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>
-				<StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal" Spacing="4">
-					<Border Classes="HotkeyBadge">
-						<TextBlock Text="Ctrl" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
-					</Border>
-					<Border Classes="HotkeyBadge">
-						<TextBlock Text="O" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
-					</Border>
-				</StackPanel>
-			</Grid>
-		</Button>
-    </StackPanel>
+
+    <UserControl.Styles>
+        <!-- Стиль карточки недавнего файла -->
+        <Style Selector="Border.RecentFileCard">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="8"/>
+            <Setter Property="Padding" Value="16"/>
+            <Setter Property="MinHeight" Value="100"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.15"/>
+                    <BrushTransition Property="Background" Duration="0:0:0.15"/>
+                    <ThicknessTransition Property="BorderThickness" Duration="0:0:0.15"/>
+                </Transitions>
+            </Setter>
+        </Style>
+
+        <Style Selector="Border.RecentFileCard:pointerover">
+            <Setter Property="Background" Value="{DynamicResource SystemControlHighlightListLowBrush}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseMediumLowBrush}"/>
+            <Setter Property="RenderTransform" Value="translateY(-2px)"/>
+            <Setter Property="BoxShadow" Value="0 4 12 0 #18000000"/>
+        </Style>
+
+        <Style Selector="TextBlock.CardTitle">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+            <Setter Property="MaxLines" Value="1"/>
+        </Style>
+
+        <Style Selector="TextBlock.CardPreview">
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="MaxLines" Value="2"/>
+            <Setter Property="LineHeight" Value="18"/>
+            <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        </Style>
+
+        <Style Selector="TextBlock.SectionTitle">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumHighBrush}"/>
+            <Setter Property="Margin" Value="0,0,0,12"/>
+        </Style>
+    </UserControl.Styles>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel MaxWidth="800" HorizontalAlignment="Center" Margin="40" Spacing="32">
+            <!-- Логотип -->
+            <Panel Height="80" HorizontalAlignment="Center">
+                <svg:Svg Path="/Assets/ReadMD-logo-dark.svg" Height="80"
+                         IsVisible="{Binding IsDarkTheme, Converter={x:Static BoolConverters.Not}}"/>
+                <svg:Svg Path="/Assets/ReadMD-logo-light.svg" Height="80"
+                         IsVisible="{Binding IsDarkTheme}"/>
+            </Panel>
+
+            <!-- Кнопка открыть файл -->
+            <Button Classes="Menu l" Command="{Binding OpenFileCommand}" HorizontalAlignment="Stretch">
+                <Grid ColumnDefinitions="* auto">
+                    <TextBlock Text="{Binding Texts.OpenFile}" Margin="0 0 28 0" VerticalAlignment="Center"/>
+                    <StackPanel Grid.Column="1" VerticalAlignment="Center" Orientation="Horizontal" Spacing="4">
+                        <Border Classes="HotkeyBadge">
+                            <TextBlock Text="Ctrl" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
+                        </Border>
+                        <Border Classes="HotkeyBadge">
+                            <TextBlock Text="O" FontSize="10" FontFamily="{StaticResource FiraFont}"/>
+                        </Border>
+                    </StackPanel>
+                </Grid>
+            </Button>
+
+            <!-- Недавние файлы -->
+            <StackPanel Spacing="16" IsVisible="{Binding RecentFiles.Count}">
+                <TextBlock Text="{Binding Texts.RecentFiles}" Classes="SectionTitle"/>
+
+                <ItemsControl ItemsSource="{Binding RecentFiles}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Button Classes="unstyled"
+                                    Command="{Binding $parent[ItemsControl].((vm:StartViewModel)DataContext).OpenRecentFileCommand}"
+                                    CommandParameter="{Binding}"
+                                    Padding="0"
+                                    Margin="0,0,12,12"
+                                    Width="382"
+                                    Background="Transparent"
+                                    BorderThickness="0"
+                                    HorizontalAlignment="Stretch"
+                                    HorizontalContentAlignment="Stretch">
+                                <Border Classes="RecentFileCard">
+                                    <StackPanel Spacing="8">
+                                        <Grid ColumnDefinitions="* Auto">
+                                            <TextBlock Text="{Binding FileName}" Classes="CardTitle"/>
+                                            <ic:FluentIcon Grid.Column="1"
+                                                         Icon="DocumentText"
+                                                         FontSize="16"
+                                                         Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"/>
+                                        </Grid>
+                                        <TextBlock Text="{Binding PreviewText}" Classes="CardPreview"/>
+                                    </StackPanel>
+                                </Border>
+                            </Button>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>

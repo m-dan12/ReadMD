@@ -19,4 +19,6 @@ public sealed class UiStringsData
     public string FontSize { get; set; } = string.Empty;
     public string LineSpacing { get; set; } = string.Empty;
     public string LineWidth { get; set; } = string.Empty;
+    public string RecentFiles { get; set; } = string.Empty;
+    public string NoRecentFiles { get; set; } = string.Empty;
 }

@@ -24,6 +24,7 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<ISingleInstanceService, SingleInstanceService>();
         services.AddSingleton<ITrayIconService, TrayIconService>();
         services.AddSingleton<IUpdateService, UpdateService>();
+        services.AddSingleton<IRecentFilesService, RecentFilesService>();
 
         services.AddTransient<MainWindowViewModel>();
         services.AddSingleton<MainViewModel>();

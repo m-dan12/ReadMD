@@ -14,5 +14,7 @@
   "FontSansSerif": "Sans-serif",
   "FontSize": "Font size",
   "LineSpacing": "Line spacing",
-  "LineWidth": "Line width"
+  "LineWidth": "Line width",
+  "RecentFiles": "Recent files",
+  "NoRecentFiles": "No recent files"
 }

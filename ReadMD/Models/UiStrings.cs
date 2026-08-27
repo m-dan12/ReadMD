@@ -20,6 +20,8 @@ public partial class UiStrings : ObservableObject
     [ObservableProperty] private string _fontSize = string.Empty;
     [ObservableProperty] private string _lineSpacing = string.Empty;
     [ObservableProperty] private string _lineWidth = string.Empty;
+    [ObservableProperty] private string _recentFiles = string.Empty;
+    [ObservableProperty] private string _noRecentFiles = string.Empty;
 
     public void UpdateFrom(UiStringsData data)
     {
@@ -39,5 +41,7 @@ public partial class UiStrings : ObservableObject
         FontSize = data.FontSize;
         LineSpacing = data.LineSpacing;
         LineWidth = data.LineWidth;
+        RecentFiles = data.RecentFiles;
+        NoRecentFiles = data.NoRecentFiles;
     }
 }
