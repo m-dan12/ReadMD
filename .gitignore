@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Test files
+test*.md
+
+# Velopack releases and publish output
+releases/
